@@ -8,6 +8,16 @@ class Request
 	private $data = array();
 
 	private $uri;
+	
+	private static $instance = NULL;
+	
+	public static function getInstance()
+	{
+	    if (self::$instance == null){
+	        self::$instance = new self();
+	    }
+	    return self::$instance;
+	}
 
 	public function __construct ()
 	{
@@ -23,6 +33,7 @@ class Request
 				$this->data = $_POST;
 				break;
 			case 'put':
+			case 'delete':
 				parse_str(file_get_contents('php://input'), $put_vars);
 				$this->data = $put_vars;
 				break;

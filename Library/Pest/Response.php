@@ -48,8 +48,16 @@ class Response
 	);
 
 	private $status = 200;
-
-	private $data;
+	
+	private static $instance = NULL;
+	
+	public static function getInstance()
+	{
+	    if (self::$instance == null){
+	        self::$instance = new self();
+	    }
+	    return self::$instance;
+	}
 
 	public function setStatus ($status)
 	{
@@ -57,30 +65,15 @@ class Response
 		return $this;
 	}
 
-	public function setData ($data)
-	{
-		$this->data = $data;
-		return $this;
-	}
-
-	public function write ($data)
-	{
-		$this->data .= $data;
-	}
-
-	public function send ()
+	public function send ($data)
 	{
 		header('HTTP/1.1 ' . $this->status . ' ' . $this->codes[$this->status]);
-		if (is_array($this->data) || is_object($this->data)) {
-			if (isset($this->data['_id'])){
-				//$this->data['id'] = (string)$this->data['_id'];
-				//unset($this->data['_id']);
-			}
-			echo json_encode($this->data);
+		header('Content-type: application/json');
+		if (is_array($data) || is_object($data)) {
+			echo json_encode($data);
 		} else {
-			echo $this->data;
+			echo $data;
 		}
-		ob_flush();
 	}
 
 	public function end($status = 200)
