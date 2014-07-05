@@ -53,7 +53,7 @@ class Response
 	
 	public static function getInstance()
 	{
-	    if (self::$instance == null){
+	    if (self::$instance === null){
 	        self::$instance = new self();
 	    }
 	    return self::$instance;
@@ -65,9 +65,11 @@ class Response
 		return $this;
 	}
 
-	public function send ($data)
+	public static function send ($data, $status = 200)
 	{
-		header('HTTP/1.1 ' . $this->status . ' ' . $this->codes[$this->status]);
+		$res = self::getInstance();
+		$res->status = $status;
+		header('HTTP/1.1 ' . $res->status . ' ' . $res->codes[$res->status]);
 		header('Content-type: application/json');
 		if (is_array($data) || is_object($data)) {
 			echo json_encode($data);
@@ -76,9 +78,10 @@ class Response
 		}
 	}
 
-	public function end($status = 200)
+	public static  function end($status = 200)
 	{
-		header('HTTP/1.1 ' . $status . ' ' . $this->codes[$status]);
+	    $res = self::getInstance();
+		header('HTTP/1.1 ' . $status . ' ' . $res->codes[$status]);
 		ob_flush();
 		exit();
 	}

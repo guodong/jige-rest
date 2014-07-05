@@ -6,7 +6,7 @@ define('PATH_LIBRARY', PATH_BASE . 'Library/');
 require PATH_LIBRARY . 'Pest/Application.php';
 $config = array(
         'db' => array(
-                'name' => 'olege'
+                'name' => 'jige'
         ),
         'apiDir' => PATH_BASE,
 );

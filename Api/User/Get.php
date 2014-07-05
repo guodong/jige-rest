@@ -2,20 +2,20 @@
 namespace Api\User;
 use Pest\Api;
 use Pest\Response;
+use Pest\Db\Collection;
+use Pest\Request;
 
 class Get extends Api
 {
 
     public $get = array(
-            'id' => '/^\d*$/'
+            'id' => '/^\S{24}$/',
     );
 
     public function get ()
     {
-        $data = array(
-                'realname' => "郭栋",
-                'gender' => '男'
-        );
-        Response::getInstance()->send($data);
+        $cuser = Collection::get('user');
+        $user = $cuser->findOne(array('_id'=> new \MongoId(Request::getInstance()->getData('id'))));
+        Response::send(array('id'=>(string)$user['_id'], 'realname'=>$user['realname'], 'email'=>$user['email']));
     }
 }

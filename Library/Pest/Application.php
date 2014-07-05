@@ -25,6 +25,7 @@ class Application
 	public function __construct($config)
 	{
 		spl_autoload_register(array(__CLASS__, 'autoload'));
+		Config::set('db', $config['db']);
 	}
     
 	/**
