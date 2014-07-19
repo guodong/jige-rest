@@ -13,24 +13,29 @@ class Login extends Api
             'password' => '/^\S{6,}$/'
     );
 
+    public $get = array()
+
+    ;
+
     public function post ()
     {
-        $cuser = Collection::get('user');
-        $user = $cuser->findOne(
-                array(
-                        'email' => Request::getInstance()->getData('email'),
-                        'password' => md5(Request::getInstance()->getData('password'))
-                ));
-        if ($user) {
-            $data = array(
-                    'id' => (string) $user['_id'],
-                    'email' => $user['email'],
-                    'realname' => $user['realname'],
-                    'role' => $user['role']
-            );
-            Response::send($data);
-        } else {
-            Response::send(array('result'=>1, 'msg'=>'no user'));
+        $c = new Collection('user');
+        $data = Request::getInstance()->getData();
+        $user = $c->findOne('email=? and password=?', array($data['email'], md5($data['password'])));
+        if ($user){
+            $_SESSION['uid'] = $user['id'];
+            Response::sendSuccess(array('id'=>$_SESSION['uid']));
+        }else {
+            Response::sendSuccess(array('id'=>1));
         }
+        
+    }
+
+    public function get ()
+    {
+        $rt = isset($_SESSION['uid'])?1:0;
+        Response::sendSuccess(array(
+                'result' => $rt
+        ));
     }
 }

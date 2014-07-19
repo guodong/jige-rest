@@ -6,17 +6,20 @@ use Pest\Db\Collection;
 use Pest\Response;
 class Register extends Api
 {
-    public $_post = array(
+    public $post = array(
             'email' => '/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/',
             'password' => '/^\S{6,}$/',
-            'realname' => '/^.{1,15}$/',
+            'captcha' => '/^\d{4}$/'
     );
     
     public function post()
     {
         $data = Request::getInstance()->getData();
         $data['password'] = md5($data['password']);
-        Collection::get('user')->insert($data);
-        Response::send(array('result'=>0));
+        $c = new Collection('user');
+        $id = $c->save($data);
+        $user = $c->findOne($id);
+        $_SESSION['uid'] = $id;
+        Response::sendSuccess(array('id'=>$id));
     }
 }

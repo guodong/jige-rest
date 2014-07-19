@@ -1,12 +1,18 @@
 <?php
+session_start();
 use Pest\Application;
+
 define('PATH_BASE', realpath('../') . '/');
 define('PATH_LIBRARY', PATH_BASE . 'Library/');
 
 require PATH_LIBRARY . 'Pest/Application.php';
 $config = array(
         'db' => array(
-                'name' => 'jige'
+                'driver' => 'Pdo',
+                'host' => 'olege.com',
+                'username' => 'jige',
+                'password' => 'jigedb',
+                'dbname' => 'jige'
         ),
         'apiDir' => PATH_BASE,
 );

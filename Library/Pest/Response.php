@@ -85,4 +85,14 @@ class Response
 		ob_flush();
 		exit();
 	}
+	
+	public static function sendSuccess($data)
+	{
+	    self::send(array('result'=>0, 'data'=>$data));
+	}
+	
+	public static function sendFailure($result, $msg = NULL )
+	{
+	    self::send(array('result'=>$result, 'msg'=>$msg));
+	}
 }
