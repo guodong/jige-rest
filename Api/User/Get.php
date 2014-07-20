@@ -16,12 +16,19 @@ class Get extends Api
     {
         $c = new Collection('user');
         $data = Request::getInstance()->getData();
-        $user = $c->findOne('id=?', array($data['id']));
+        $user = $c->findOne('id = ?',array($data['id']));
         if ($user){
         	Response::sendSuccess(array(
 	        	'id' => $user["id"],
 	        	'name' => $user["name"],
-	        	'tel' => $user["tel"]
+	        	'tel' => $user["tel"],
+	        	'realname' => $user["realname"],
+	        	'nickname' => $user["nickname"],
+	        	'role' =>$user["role"],
+	        	'is_verified' => $user["is_verified"],
+	        	'social' => $user["social"],
+	        	'campus_id' => $user["campus_id"],
+	        	'config' => $user["config"]
         	));
         }else {
         	Response::sendSuccess(array('result'=>0));
