@@ -9,21 +9,22 @@ class Get extends Api
 {
 
     public $get = array(
-            'id' => '/^\S{1}$/',
+            'id' => '/^\S{24}$/',
     );
 
     public function get ()
     {
         $c = new Collection('user');
-        //$u = $c->findOne('id=? and uid=?', array(1,2));
-        //var_dump($u);
-        
-        $u = $c->save(array('tel'=>121233));
-        var_dump($u);
-        return Response::send(array('id'=>'12312'));
-        
-        $cuser = Collection::get('user');
-        $user = $cuser->findOne(array('_id'=> new \MongoId(Request::getInstance()->getData('id'))));
-        Response::send(array('id'=>(string)$user['_id'], 'realname'=>$user['realname'], 'email'=>$user['email']));
+        $data = Request::getInstance()->getData();
+        $user = $c->findOne('id=?', array($data['id']));
+        if ($user){
+        	Response::sendSuccess(array(
+	        	'id' => $user["id"],
+	        	'name' => $user["name"],
+	        	'tel' => $user["tel"]
+        	));
+        }else {
+        	Response::sendSuccess(array('result'=>0));
+        }
     }
 }

@@ -18,7 +18,7 @@ class Register extends Api
         $data['password'] = md5($data['password']);
         $c = new Collection('user');
         $id = $c->save($data);
-        $user = $c->findOne($id);
+        //$user = $c->findOne($id);
         $_SESSION['uid'] = $id;
         Response::sendSuccess(array('id'=>$id));
     }
