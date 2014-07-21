@@ -46,6 +46,11 @@ class Response
 			504 => 'Gateway Timeout',
 			505 => 'HTTP Version Not Supported'
 	);
+	private $jigeErrorCodes = array(
+			1000 => 'Undefined Error',
+			1001 => 'Invalid Type',
+			1002 =>'Book is inexistent',
+	);
 
 	private $status = 200;
 	
@@ -91,8 +96,9 @@ class Response
 	    self::send(array('result'=>0, 'data'=>$data));
 	}
 	
-	public static function sendFailure($result, $msg = NULL )
+	public static function sendFailure($result = 1000)
 	{
-	    self::send(array('result'=>$result, 'msg'=>$msg));
+		$res = self::getInstance();
+	    self::send(array('result'=>$result, 'msg'=>$res->jigeErrorCodes[$result]));
 	}
 }
