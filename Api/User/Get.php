@@ -4,7 +4,7 @@ use Pest\Api;
 use Pest\Response;
 use Pest\Db\Collection;
 use Pest\Request;
-
+//根据ID获取某个用户的详细信息
 class Get extends Api
 {
 

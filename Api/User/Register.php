@@ -4,6 +4,7 @@ use Pest\Api;
 use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
+//新用户注册
 class Register extends Api
 {
     public $post = array(
