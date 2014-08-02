@@ -19,7 +19,11 @@ class Get extends Api
 		if("ISBN" == $data['type'])
 		{
 			$bookinfo = $c->findOne('isbn = ?',array($data['q']));
-		}else{
+		}else if("id" == $data['type'])
+		{
+			$bookinfo = $c->findOne('id = ?',array($data['q']));
+		}
+		else{
 			$data['q'] = '%'.$data['q'].'%';
 			$bookinfo = $c->findAll('search LIKE ? ',array($data['q']));
 		}
