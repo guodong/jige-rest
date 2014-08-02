@@ -65,7 +65,6 @@ class Get extends Api
     private function doubanToDb ($data, $version = '2')
     {
         $data = array(
-                'id' => new \MongoId(),
                 'name' => $data->title,
                 'author' => $data->author[0],
                 'press' => $data->publisher,
