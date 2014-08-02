@@ -70,10 +70,11 @@ class Get extends Api
                 'press' => $data->publisher,
                 'isbn' => $data->isbn13,
                 'edition' => $data->pubdate,
-                'fixedprice' => $data->price,
+                'fixedPrice' => $data->price,
                 'version' => $version,
                 'doubanjson' => json_encode($data),
-                'bookstatus' => 'approve'
+                'bookStatus' => 'approve',
+                'discount' => 0
         );
         $c = new Collection('bookinfo');
         $c->save($data);
