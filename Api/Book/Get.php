@@ -9,7 +9,7 @@ class Get extends Api
 {	
 	public $get = array(
 			'q' => '/^\S{1,}$/',
-			'type' => '/^\S{1,)$/',
+			'type' => '/^\S{1,}$/',
 	);
 	
 	public function get ()
