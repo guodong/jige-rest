@@ -18,7 +18,8 @@ class Get extends Api
         $c = new Collection('bookinfo');
         $data = Request::getInstance()->getData();
         if ("ISBN" == $data['type']) {
-            preg_match_all('/\d+/', $data['q'], $data['q']);
+            preg_match_all('/\d+/', $data['q'], $d);
+            $data['q'] = $d[0][0];
             $bookinfo = $c->findOne('isbn = ?', 
                     array(
                             $data['q']
@@ -85,6 +86,7 @@ class Get extends Api
     private function GetBookInfoFromDoubanV2 ($isbn)
     {
         $url = "https://api.douban.com/v2/book/isbn/:{$isbn}?apikey=0c6f834296af9f37254e89c7c40edda5";
-        return file_get_contents($url);
+        $ct = file_get_contents($url);
+        return $ct;
     }
 }
