@@ -13,9 +13,14 @@ class GetAll extends Api
 
 	public function get ()
 	{
-		$c = new Collection('');
+		$c = new Collection('sellinfo');
 		$data = Request::getInstance()->getData();
-		$Saleinfo = $c->find('id = ?',array($data['id']));
+		if($data['id'] == "000000000000000000000000"){
+			$Saleinfo = $c->findAll("1 = 1");
+		}
+		else {
+			$Saleinfo = $c->findAll('sellerid = ?',array($data['id']));
+		}
 		if ($Saleinfo){
 			Response::sendSuccess($Saleinfo);
 		}else {
