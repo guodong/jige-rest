@@ -45,11 +45,12 @@ class Get extends Api
 	
 	private function GetBookInfoFromDoubanV1($isbn)
 	{
-	
+		
 	}
 	
 	private function GetBookInfoFromDoubanV2($isbn)
 	{
-	
+		$url = "https://api.douban.com/v2/book/isbn/:9787543649133?apikey=0c6f834296af9f37254e89c7c40edda5";
+		return file_get_contents($url);
 	}
 }
