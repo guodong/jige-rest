@@ -10,7 +10,7 @@ class Get extends Api
 
     public $get = array(
             'q' => '/^\S{1,}$/',
-            'type' => '/^\S{1,)$/'
+            'type' => '/^\S{1,}$/'
     );
 
     public function get ()
@@ -39,13 +39,13 @@ class Get extends Api
                 $obj_info = json_decode($bookinfo);
                 if (! isset($obj_info->code)) {
                     $this->doubanToDb($obj_info, '2');
-                    Response::sendSuccess($bookinfo);
+                    Response::sendSuccess(json_encode($bookinfo));
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
                     $obj_info = json_decode($bookinfo);
                     if (! isset($obj_info->code)) {
                         $this->doubanToDb($obj_info, '1');
-                        Response::sendSuccess($bookinfo);
+                        Response::sendSuccess(json_encode($bookinfo));
                     } else {
                         Response::sendSuccess(
                                 array(
