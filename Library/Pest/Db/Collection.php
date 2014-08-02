@@ -29,7 +29,7 @@ class Collection
         $sql = "SELECT * FROM `{$this->name}` WHERE {$condition}";
         $r = $db->prepare($sql);
         $r->execute($args);
-        return $r->fetch();
+        return $r->fetch(\PDO::FETCH_ASSOC);
     }
 
     public function findAll ($condition, $args)
@@ -39,7 +39,7 @@ class Collection
         $r = $db->prepare($sql);
         $r->execute($args);
         $rows = array();
-        while ($row = $r->fetch()){
+        while ($row = $r->fetch(\PDO::FETCH_ASSOC)){
             array_push($rows, $row);
         }
         return $rows;
