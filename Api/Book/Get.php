@@ -39,13 +39,13 @@ class Get extends Api
                 $obj_info = json_decode($bookinfo);
                 if (! isset($obj_info->code)) {
                     $this->doubanToDb($obj_info, '2');
-                    Response::sendSuccess(json_encode($bookinfo));
+                    Response::sendSuccess(json_decode($bookinfo));
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
                     $obj_info = json_decode($bookinfo);
                     if (! isset($obj_info->code)) {
                         $this->doubanToDb($obj_info, '1');
-                        Response::sendSuccess(json_encode($bookinfo));
+                        Response::sendSuccess(json_decode($bookinfo));
                     } else {
                         Response::sendSuccess(
                                 array(
