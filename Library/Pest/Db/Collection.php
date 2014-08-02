@@ -38,7 +38,11 @@ class Collection
         $sql = "SELECT * FROM `{$this->name}` WHERE {$condition}";
         $r = $db->prepare($sql);
         $r->execute($args);
-        return $r->fetch();
+        $rows = array();
+        while ($row = $r->fetch()){
+            array_push($rows, $row);
+        }
+        return $rows;
     }
 
     public function save ($data)
