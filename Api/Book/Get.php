@@ -32,11 +32,11 @@ class Get extends Api
                     ));
         }
         
-        if ($bookinfo) {
+        if (!$bookinfo) {
             Response::sendSuccess($bookinfo);
         } else 
             if ("ISBN" == $data['type']) {
-                $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
+                $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);die();
                 $obj_info = json_decode($bookinfo);
                 if (! isset($obj_info->code)) {
                     $this->doubanToDb($obj_info, '2');
@@ -64,7 +64,7 @@ class Get extends Api
 
     private function doubanToDb ($data, $version = '2')
     {
-        $data = array(
+        $d = array(
                 'name' => $data->title,
                 'author' => $data->author[0],
                 'press' => $data->publisher,
@@ -77,11 +77,30 @@ class Get extends Api
                 'discount' => 0
         );
         $c = new Collection('bookinfo');
-        $c->save($data);
+        $c->save($d);
     }
 
     private function GetBookInfoFromDoubanV1 ($isbn)
-    {}
+    {
+    	$url = "https://api.douban.com/book/subject/isbn/{$isbn}?apikey=0c6f834296af9f37254e89c7c40edda5";
+    	$ct = file_get_contents($url);
+    	$str = simplexml_load_string($ct);
+    	$data = $str->entry;
+    	var_dump($str);
+//     	$d = array(
+
+//     	        'name' => (string)$data->title,
+//     	        'author' => (string)$data->author->name[0],
+//     	        'press' => $data->db->,
+//     	        'isbn' => $data->isbn13,
+//     	        'edition' => $data->pubdate,
+//     	        'fixedPrice' => $data->price,
+//     	        'version' => $version,
+//     	        'doubanjson' => json_encode($data),
+//     	        'bookStatus' => 'approve',
+//     	        'discount' => 0
+//     	)
+    }
 
     private function GetBookInfoFromDoubanV2 ($isbn)
     {
