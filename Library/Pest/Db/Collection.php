@@ -53,7 +53,7 @@ class Collection
                 unset($data[$key]);
         }
         
-        if (($data['id'])) {
+        if ((isset($data['id']))) {
             $id = $data['id'];
             unset($data['id']);
             return $this->update('where id = ?', 

@@ -50,6 +50,10 @@ class Application
 	{
 		$request = new Request();
 		$response = new Response();
+		if ('/' === $request->getUri()){
+		    $response->end(404);
+		    return ;
+		}
 		$arr = explode('/', $request->getUri());
 		$last = array_pop($arr);
 		$method = $request->getMethod();

@@ -5,7 +5,7 @@ class Request
 
 	private $method = 'get';
 
-	private $data = array();
+	private static $data = array();
 
 	private $uri;
 	
@@ -27,15 +27,15 @@ class Request
 		$this->uri = $arr[0];
 		switch ($this->method) {
 			case 'get':
-				$this->data = $_GET;
+				self::$data = $_GET;
 				break;
 			case 'post':
-				$this->data = $_POST;
+				self::$data = $_POST;
 				break;
 			case 'put':
 			case 'delete':
 				parse_str(file_get_contents('php://input'), $put_vars);
-				$this->data = $put_vars;
+				self::$data = $put_vars;
 				break;
 		}
 	}
@@ -53,29 +53,29 @@ class Request
 
 	public function setData ($data)
 	{
-		$this->data = $data;
+		self::$data = $data;
 		return $this;
 	}
 
-	public function getData($key = NULL, $clean = TRUE)
+	public static function getData($key = NULL, $clean = TRUE)
 	{
 		if ($key){
 			if (is_array($key)){
 				$da = array();
 				foreach ($key as $v){
 					if ($clean){
-						if (isset($this->data[$v]) && !empty($this->data[$v])){
-							$da[$v] = $this->data[$v];
+						if (isset(self::$data[$v]) && !empty(self::$data[$v])){
+							$da[$v] = self::$data[$v];
 						}
 					}else {
-						$da[$v] = isset($this->data[$v])?$this->data[$v]:null;
+						$da[$v] = isset(self::$data[$v])?self::$data[$v]:null;
 					}
 				}
 				return $da;
 			}
-			return isset($this->data[$key])?$this->data[$key]:null;
+			return isset(self::$data[$key])?self::$data[$key]:null;
 		}
-		return $this->data;
+		return self::$data;
 	}
 
 	public function getUri()
