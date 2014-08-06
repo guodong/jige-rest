@@ -37,11 +37,15 @@ class Book extends Api
             if ("ISBN" == $data['type']) {
                 $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
                 $obj_info = json_decode($bookinfo);
+                echo '11111';
+                var_dump($obj_info);
                 if (! isset($obj_info->code)) {
                     $this->doubanToDb($obj_info, 2);
                     Response::sendSuccess(json_decode($bookinfo));
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
+                    echo '22222';
+                    var_dump($bookinfo);
                     if ($bookinfo != 'bad isbn') {
                         $obj_info = json_decode($bookinfo);
                         $this->doubanToDb($obj_info, 1);
@@ -93,9 +97,12 @@ class Book extends Api
                     'bookStatus' => 'approve',
                     'discount' => 0
             );
-            print_r($d);die();
+            //print_r($d);die();
         }
-        
+        echo 'version:'.$version;
+        var_dump($d);
+        //if(null==$d->name||null==$d->isbn||null==$d->fixedPrice)
+        //	return;
         $c = new Collection('bookinfo');
         $c->save($d);
         return $c->findOne('isbn=?',array($d['isbn']));
@@ -139,6 +146,7 @@ class Book extends Api
     {
         $url = "https://api.douban.com/v2/book/isbn/:{$isbn}?apikey=0c6f834296af9f37254e89c7c40edda5";
         $ct = file_get_contents($url);
+        var_dump($ct);
         return $ct;
     }
 }
