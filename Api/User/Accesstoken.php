@@ -1,6 +1,9 @@
 <?php
 namespace Api\User;
 use Pest\Api;
+use Pest\Db\Collection;
+use Pest\Request;
+use Pest\Response;
 
 class Accesstoken extends Api
 {
