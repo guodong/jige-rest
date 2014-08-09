@@ -1,5 +1,5 @@
 <?php
-ini_set('session.cookie_domain', 'web.jige.la.me');
+//ini_set('session.cookie_domain', 'web.jige.la.me');
 session_start();
 use Pest\Application;
 

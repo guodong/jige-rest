@@ -35,9 +35,10 @@ class User extends Api
     {
         $c = new Collection('user');
         $data = Request::getInstance()->getData();
-        $user = $c->findOne('id = ?', array(
-                $data['id']
-        ));
+        $user = $c->findOne('id = ?', 
+                array(
+                        $data['id']
+                ));
         if ($user) {
             Response::sendSuccess(
                     array(
@@ -53,9 +54,15 @@ class User extends Api
                             'config' => $user["config"]
                     ));
         } else {
-            Response::sendSuccess(array(
-                    'result' => 0
-            ));
+            Response::sendSuccess(
+                    array(
+                            'result' => 0
+                    ));
         }
     }
+
+    public $put = array(
+            'id' => '/^\S{24}$/',
+            'nickname' => '/.{1,}/',
+    );
 }

@@ -23,9 +23,8 @@ class Accesstoken extends Api
                         md5($data['password'])
                 ));
         if ($user) {
-            $_SESSION['uid'] = $user['id'];
             Response::sendSuccess(array(
-                    'id' => $_SESSION['uid']
+                    'id' => $user['id']
             ));
         } else {
             Response::sendSuccess(array(
