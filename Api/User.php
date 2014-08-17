@@ -26,6 +26,34 @@ class User extends Api
                 'id' => $id
         ));
     }
+    
+    public $put = array(
+            'id' => '/^\S{24}$/',
+            'nickname' => '/.{1,}/',
+    );
+   
+   public function put()
+   {
+   		$data = Request::getInstance()->getData();
+   		$c = new Collection('user');
+   		$ret = $c->findOne('id=? AND nickname LIKE ?'  ,
+   				array(
+                        $data['id'],
+                        ($data['nickname'])
+                ));
+   		if(!$ret)	{
+   			$id = $c->save($data);
+   			if($id){
+	   			Response::sendSuccess(array(
+	                'id' => $id
+		        ));
+   			}else{
+   				Response::sendFailure(1004);
+   			}
+   		}else{
+   			Response::sendFailure(1003);
+   		}  		
+   }
 
     public $get = array(
             'id' => '/^\S{24}$/'
@@ -61,8 +89,5 @@ class User extends Api
         }
     }
 
-    public $put = array(
-            'id' => '/^\S{24}$/',
-            'nickname' => '/.{1,}/',
-    );
+
 }

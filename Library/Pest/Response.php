@@ -50,6 +50,8 @@ class Response
 			1000 => 'Undefined Error',
 			1001 => 'Invalid Type',
 			1002 =>'Book is inexistent',
+			1003 => 'Invalid Uid',
+			1004 => 'Invalid Parameter'
 	);
 
 	private $status = 200;
