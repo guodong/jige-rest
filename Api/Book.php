@@ -24,11 +24,17 @@ class Book extends Api
                             $data['q']
                     ));
         } else {
-            $data['q'] = '%' . $data['q'] . '%';
-            $bookinfo = $c->findAll('search LIKE ? ',
-                    array(
-                            $data['q']
-                    ));
+            $ret = split(' ',$data['q']);
+            for($i = 0;$i < count($ret);$i++){
+            $sql = '';
+            if($ret[$i] != ''){
+                if($sql == '')
+                    $sql += '`search` LIKE %'.$ret[$i].'%';
+                else
+                    $sql += ' AND `search` LIKE %'.$ret[$i].'%';
+                }
+            }
+            $bookinfo = $c->findAll($sql);
         }
         
         if ($bookinfo) {
