@@ -48,8 +48,8 @@ class Application
 	
 	public function run()
 	{
-		$request = new Request();
-		$response = new Response();
+		$request = Request::getInstance();
+		$response = Response::getInstance();
 		if ('/' === $request->getUri()){
 		    $response->end(404);
 		    return ;
