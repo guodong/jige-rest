@@ -37,7 +37,10 @@ class Collection
         $db = Db::getInstance()->getDb();
         $sql = "SELECT * FROM `{$this->name}` WHERE {$condition}";
         $r = $db->prepare($sql);
-        $r->execute($args);
+        if(!$args)
+        	$r->execute();
+        else 
+        	$r->execute($args);
         $rows = array();
         while ($row = $r->fetch(\PDO::FETCH_ASSOC)){
             array_push($rows, $row);

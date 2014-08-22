@@ -25,16 +25,16 @@ class Book extends Api
                     ));
         } else {
             $ret = split(' ',$data['q']);
-            for($i = 0;$i < count($ret);$i++){
             $sql = '';
+            for($i = 0;$i < count($ret);$i++){
             if($ret[$i] != ''){
                 if($sql == '')
-                    $sql += '`search` LIKE %'.$ret[$i].'%';
+                    $sql = $sql . '`search` LIKE \'%'.$ret[$i].'%\'';
                 else
-                    $sql += ' AND `search` LIKE %'.$ret[$i].'%';
+                    $sql = $sql . ' AND `search` LIKE \'%'.$ret[$i].'%\'';
                 }
             }
-            $bookinfo = $c->findAll($sql);
+            $bookinfo = $c->findAll($sql,null);
         }
         
         if ($bookinfo) {
