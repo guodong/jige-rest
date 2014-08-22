@@ -25,11 +25,9 @@ class Book extends Api
                     ));
         }else if("id" == $data['type']){
             $c = new Collection('bookinfo');
-            $book = $c->findOne('id=?', array($data['q']));
-            Response::send($book);
-            return;
+            $bookinfo = $c->findOne('id=?', array($data['q']));
         }else{
-            $ret = split(' ',$data['q']);
+            $ret = @split(' ',$data['q']);
             $sql = '';
             for($i = 0;$i < count($ret);$i++){
             if($ret[$i] != ''){
