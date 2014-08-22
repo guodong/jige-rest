@@ -18,4 +18,20 @@ class Sell extends Api
         Response::sendSuccess($d);
     }
     
+    public $post = array(
+    		'book_id' => '/^\d{24}$/',
+    		'seller_id' => '/^\d{24}$/',
+    		'price' =>'/^.{1,}/',
+    );
+    
+    public function post ()
+    {
+    	$c = new Collection('sellinfo');
+    	$data = Request::getInstance()->getData();
+    	$data['time'] = time();
+    	$data['status'] = 0;
+    	$id = $c->save($data);
+    	Response::sendSuccess($id);
+    }
+    
 }
