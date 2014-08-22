@@ -67,4 +67,11 @@ class Db implements Singleton
             die("Error!: " . $e->getMessage() . "<br/>");
         }
     }
+    
+    public static function sql($sql, $params)
+    {
+        $sth = $this->db->prepare($sql);
+        $sth->execute($params);
+        return $sth->fetchAll();
+    }
 }

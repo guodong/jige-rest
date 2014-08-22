@@ -18,4 +18,12 @@ class Sell extends Api
         Response::sendSuccess($d);
     }
     
+    
+    public function all()
+    {
+        $data = Request::getData();
+        $c = new Collection('sellinfo');
+        $d = $c->findAll('book_id = ?', array($data['book_id']));
+        Response::sendSuccess($d);
+    }
 }

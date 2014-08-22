@@ -8,7 +8,7 @@ class Book extends Api
 {
     private $data;
     public $get = array(
-            'q' => '/^\S{1,}$/',
+            'q' => '/^.{1,}$/',
             'type' => '/^\S{1,}$/'
     );
     
@@ -30,11 +30,11 @@ class Book extends Api
             $ret = @split('#',$data['q']);
             $sql = '';
             for($i = 0;$i < count($ret);$i++){
-            if($ret[$i] != ''){
-                if($sql == '')
-                    $sql = $sql . '`search` LIKE \'%'.$ret[$i].'%\'';
-                else
-                    $sql = $sql . ' AND `search` LIKE \'%'.$ret[$i].'%\'';
+                if($ret[$i] != ''){
+                    if($sql == '')
+                        $sql = $sql . '`search` LIKE \'%'.$ret[$i].'%\'';
+                    else
+                        $sql = $sql . ' AND `search` LIKE \'%'.$ret[$i].'%\'';
                 }
             }
             $bookinfo = $c->findAll($sql,null);
