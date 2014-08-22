@@ -34,7 +34,6 @@ class Request
 				break;
 			case 'put':
 			    $data = json_decode(file_get_contents('php://input'));
-			    print_r($data);
 			    self::$data = $data;
 			    break;
 			case 'delete':
