@@ -29,17 +29,17 @@ class User extends Api
     
     public $put = array(
             'id' => '/^\S{24}$/',
-            'nickname' => '/.{1,}/',
+            //'nickname' => '/.{1,}/',
     );
    
    public function put()
    {
+        return;
    		$data = Request::getInstance()->getData();
    		$c = new Collection('user');
-   		$ret = $c->findOne('id=? AND nickname LIKE ?'  ,
+   		$ret = $c->findOne('id=?'  ,
    				array(
-                        $data['id'],
-                        ($data['nickname'])
+                        $data['id']
                 ));
    		if(!$ret)	{
    			$id = $c->save($data);

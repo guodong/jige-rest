@@ -57,11 +57,12 @@ class Application
 		$arr = explode('/', $request->getUri());
 		$last = array_pop($arr);
 		$method = $request->getMethod();
-		if ($this->isPlural($last)){
-			$last = substr($last, 0, -1);
-			$method = 'all';
-		}
 		$api_str = 'Api' . $this->caseTrans(str_replace('/', '\\', $request->getUri()), '\\');
+
+		if ($this->isPlural($last)){
+		    $api_str = substr($api_str, 0, -1);
+		    $method = 'all';
+		}
 		$api = new $api_str();
 		
 		if (!method_exists($api, $method)){

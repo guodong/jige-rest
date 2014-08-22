@@ -72,12 +72,16 @@ class Response
 		return $this;
 	}
 
-	public static function send ($data, $status = 200)
+	public static function send ($data, $status = 200, $is_raw = false)
 	{
 		$res = self::getInstance();
 		$res->status = $status;
 		header('HTTP/1.1 ' . $res->status . ' ' . $res->codes[$res->status]);
 		header('Content-type: application/json');
+		if ($is_raw){
+		    echo $data;
+		    return ;
+		}
 		if (is_array($data) || is_object($data)) {
 			echo json_encode($data);
 		} else {
