@@ -69,4 +69,16 @@ class Sell extends Api
 	        Response::sendSuccess($ret);
         }
     }
+    
+    public $put = array(
+    		'id' => '/^\d{24}$/',
+    );
+    
+    public function put ()
+    {
+    	$c = new Collection('sellinfo');
+    	$data = Request::getInstance()->getData();
+    	$id = $c->save($data);
+    	Response::sendSuccess($id);
+    }
 }
