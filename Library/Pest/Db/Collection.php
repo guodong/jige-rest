@@ -74,6 +74,8 @@ class Collection
         $pmarr = array();
         
         foreach ($data as $field => $v) {
+        	if (empty($v))
+        		continue;
             $karr[] = $field . " = ?";
             $pmarr[] = $v;
         }
