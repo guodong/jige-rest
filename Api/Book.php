@@ -8,7 +8,7 @@ class Book extends Api
 {
     private $data;
     public $get = array(
-            'q' => '/^\d{1,}$/',
+            'q' => '/^\S{1,}$/',
             'type' => '/^\S{1,}$/'
     );
     
@@ -27,7 +27,7 @@ class Book extends Api
             $c = new Collection('bookinfo');
             $bookinfo = $c->findOne('id=?', array($data['q']));
         }else{
-            $ret = @split(' ',$data['q']);
+            $ret = @split('#',$data['q']);
             $sql = '';
             for($i = 0;$i < count($ret);$i++){
             if($ret[$i] != ''){
