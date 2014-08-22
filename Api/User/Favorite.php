@@ -31,6 +31,6 @@ class Favorite extends Api
     {
         $c = new Collection('favorite');
         $data = $c->findAll('user_id = ?', array(Request::getData('user_id')));
-        Response::send($data);
+        Response::sendSuccess($data);
     }
 }
