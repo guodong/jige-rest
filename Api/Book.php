@@ -23,7 +23,12 @@ class Book extends Api
                     array(
                             $data['q']
                     ));
-        } else {
+        }else if("id" == $data['type']){
+            $c = new Collection('bookinfo');
+            $book = $c->findOne('id=?', array($data['q']));
+            Response::send($book);
+            return;
+        }else{
             $ret = split(' ',$data['q']);
             for($i = 0;$i < count($ret);$i++){
             $sql = '';
