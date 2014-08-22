@@ -120,6 +120,18 @@ class Collection
             return false;
         }
     }
+    
+    public function delete($condition, $args = NULL)
+    {
+        $db = Db::getInstance()->getDb();
+        $sql = "DELETE FROM `{$this->name}` WHERE {$condition}";
+        $r = $db->prepare($sql);
+        if(!$args)
+            $r->execute();
+        else
+            $r->execute($args);
+        return true;
+    }
 
     private function getColumns ()
     {

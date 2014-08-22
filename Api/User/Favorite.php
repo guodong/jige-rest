@@ -33,4 +33,15 @@ class Favorite extends Api
         $data = $c->findAll('user_id = ?', array(Request::getData('user_id')));
         Response::sendSuccess($data);
     }
+    
+    public $delete = array(
+    	'id' => '/^\S{24}$/'
+    );
+    
+    public function delete()
+    {
+        $c = new Collection('favorite');
+        $c->delete('id=?', array(Request::getData('id')));
+        Response::sendSuccess(array());
+    }
 }

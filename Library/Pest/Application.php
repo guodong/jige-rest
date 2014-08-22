@@ -64,6 +64,7 @@ class Application
 		$arr = explode('/', $url);
 		$last = array_pop($arr);
 		$method = $request->getMethod();
+		
 		$api_str = 'Api' . $this->caseTrans(str_replace('/', '\\', $url), '\\');
 
 		if ($this->isPlural($last)){
@@ -73,7 +74,7 @@ class Application
 		$api = new $api_str();
 		
 		if (!method_exists($api, $method)){
-			$response->end(405);
+			//$response->end(4005);
 		}
 		
 		if(property_exists($api, $method)){
