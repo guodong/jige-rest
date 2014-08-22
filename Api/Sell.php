@@ -78,7 +78,7 @@ class Sell extends Api
     {
      	$c = new Collection('sellinfo');
      	$data = Request::getInstance()->getData();
-     	$id = $c->update('where id=?', array($data['id']), $data);
+     	$id = $c->save($data);
     	Response::sendSuccess(array());
     }
 }

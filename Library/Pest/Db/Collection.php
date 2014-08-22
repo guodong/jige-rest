@@ -22,7 +22,7 @@ class Collection
     public function findOne ($condition, $args = NULL)
     {
         $db = Db::getInstance()->getDb();
-        if (null === $args){
+        if (null === $args) {
             $args = $condition;
             $condition = 'id=?';
         }
@@ -37,25 +37,40 @@ class Collection
         $db = Db::getInstance()->getDb();
         $sql = "SELECT * FROM `{$this->name}` WHERE {$condition}";
         $r = $db->prepare($sql);
-        if(!$args)
-        	$r->execute();
-        else 
-        	$r->execute($args);
+        if (! $args)
+            $r->execute();
+        else
+            $r->execute($args);
         $rows = array();
-        while ($row = $r->fetch(\PDO::FETCH_ASSOC)){
+        while ($row = $r->fetch(\PDO::FETCH_ASSOC)) {
             array_push($rows, $row);
         }
         return $rows;
     }
 
+    private function object2array ($object)
+    {
+        if (is_object($object)) {
+            foreach ($object as $key => $value) {
+                $array[$key] = $value;
+            }
+        } else {
+            $array = $object;
+        }
+        return $array;
+    }
+
     public function save ($data)
     {
         $colunms = $this->getColumns();
+        if (is_object($data)){
+            $data = $this->object2array($data);
+        }
         foreach ($data as $key => $value) {
             if (null === $value || ! in_array($key, $colunms))
                 unset($data[$key]);
         }
-        
+        print_r($data);
         if ((isset($data['id']))) {
             $id = $data['id'];
             unset($data['id']);
@@ -74,8 +89,6 @@ class Collection
         $pmarr = array();
         
         foreach ($data as $field => $v) {
-        	if (empty($v))
-        		continue;
             $karr[] = $field . " = ?";
             $pmarr[] = $v;
         }
@@ -116,19 +129,19 @@ class Collection
         $db = Db::getInstance()->getDb();
         $insert = $db->prepare($sql);
         if ($insert->execute($pmarr)) {
-            return (string)$id;
+            return (string) $id;
         } else {
             
             return false;
         }
     }
-    
-    public function delete($condition, $args = NULL)
+
+    public function delete ($condition, $args = NULL)
     {
         $db = Db::getInstance()->getDb();
         $sql = "DELETE FROM `{$this->name}` WHERE {$condition}";
         $r = $db->prepare($sql);
-        if(!$args)
+        if (! $args)
             $r->execute();
         else
             $r->execute($args);
