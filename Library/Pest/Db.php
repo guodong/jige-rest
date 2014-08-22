@@ -68,10 +68,10 @@ class Db implements Singleton
         }
     }
     
-    public static function sql($sql, $params)
+    public static function sql($sql, $params = array())
     {
-        $sth = $this->db->prepare($sql);
+        $sth = self::getInstance()->getDb()->prepare($sql);
         $sth->execute($params);
-        return $sth->fetchAll();
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
