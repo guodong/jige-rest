@@ -54,10 +54,17 @@ class Application
 		    $response->end(404);
 		    return ;
 		}
-		$arr = explode('/', $request->getUri());
+		$url = $request->getUri();
+		//handle backbone sytle url, /user/12312323123213 \PUT
+		if (preg_match('/.*\/\S{24}/', $request->getUri())){
+		    $url = substr($request->getUri(), 0, strlen($request->getUri())-25);
+		    $id = substr($request->getUri(), 0, -24);
+		    $request->appendData('id', $id);
+		}
+		$arr = explode('/', $url);
 		$last = array_pop($arr);
 		$method = $request->getMethod();
-		$api_str = 'Api' . $this->caseTrans(str_replace('/', '\\', $request->getUri()), '\\');
+		$api_str = 'Api' . $this->caseTrans(str_replace('/', '\\', $url), '\\');
 
 		if ($this->isPlural($last)){
 		    $api_str = substr($api_str, 0, -1);

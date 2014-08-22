@@ -15,7 +15,7 @@ class Sell extends Api
         $c = new Collection('sellinfo');
         $data = Request::getInstance()->getData();
         $d = $c->findOne('id=?', array($data['id']));
-        Response::send($d);
+        Response::sendSuccess($d);
     }
     
 }

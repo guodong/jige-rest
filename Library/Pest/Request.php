@@ -56,6 +56,12 @@ class Request
 		self::$data = $data;
 		return $this;
 	}
+	
+	public function appendData($key, $value)
+	{
+	    self::$data[$key] = $value;
+	    return $this;
+	}
 
 	public static function getData($key = NULL, $clean = TRUE)
 	{
