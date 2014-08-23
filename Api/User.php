@@ -27,9 +27,8 @@ class User extends Api
         	return;
         }
         $id = $c->save($data);
-        Response::sendSuccess(array(
-                'id' => $id
-        ));
+        $data = $c->findOne('id=?', array($id));
+        Response::sendSuccess($data);
     }
     
     public $put = array(
