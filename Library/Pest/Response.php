@@ -49,9 +49,10 @@ class Response
 	private $jigeErrorCodes = array(
 			1000 => 'Undefined Error',
 			1001 => 'Invalid Type',
-			1002 =>'Book is inexistent',
+			1002 => 'Book is inexistent',
 			1003 => 'Invalid Uid',
-			1004 => 'Invalid Parameter'
+			1004 => 'Invalid Parameter',
+			1005 => 'Repeat',
 	);
 
 	private $status = 200;

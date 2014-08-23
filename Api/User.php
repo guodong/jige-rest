@@ -21,6 +21,11 @@ class User extends Api
         $data['role'] = 'normal';
         $data['is_verified'] = 0;
         $c = new Collection('user');
+        $ret = $c->findOne('email = ?',array($data['email']));
+        if($ret){
+        	Response::sendFailure(1005);
+        	return;
+        }
         $id = $c->save($data);
         Response::sendSuccess(array(
                 'id' => $id
