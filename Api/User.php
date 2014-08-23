@@ -71,19 +71,7 @@ class User extends Api
                         $data['id']
                 ));
         if ($user) {
-            Response::sendSuccess(
-                    array(
-                            'id' => $user["id"],
-                            'name' => $user["name"],
-                            'tel' => $user["tel"],
-                            'realname' => $user["realname"],
-                            'nickname' => $user["nickname"],
-                            'role' => $user["role"],
-                            'is_verified' => $user["is_verified"],
-                            'social' => $user["social"],
-                            'campus_id' => $user["campus_id"],
-                            'config' => $user["config"]
-                    ));
+            Response::sendSuccess($user);
         } else {
             Response::sendSuccess(
                     array(
