@@ -33,11 +33,16 @@ class Request
 				self::$data = $_POST;
 				break;
 			case 'put':
-			    $data = json_decode(file_get_contents('php://input'));
+			    $raw = file_get_contents('php://input');
+			    $data = json_decode($raw);
 			    if (is_object($data)){
 			        $data = Util::object2array($data);
 			    }
 			    self::$data = $data;
+			    if (empty(self::$data)){
+			        parse_str($raw, $put_vars);
+			        self::$data = $put_vars;
+			    }
 			    break;
 			case 'delete':
 				parse_str(file_get_contents('php://input'), $put_vars);
