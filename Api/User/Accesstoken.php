@@ -9,8 +9,8 @@ class Accesstoken extends Api
 {
 
     public $post = array(
-            'email' => '/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/',
-            'password' => '/^\S{6,}$/'
+            'email' => '/^.{1,}$/',
+            'password' => '/^.{1,}$/'
     );
 
     public function post ()
@@ -23,9 +23,7 @@ class Accesstoken extends Api
                         md5($data['password'])
                 ));
         if ($user) {
-            Response::sendSuccess(array(
-                    'id' => $user['id']
-            ));
+            Response::sendSuccess($user);
         } else {
             Response::sendSuccess(array(
                     'id' => 0
