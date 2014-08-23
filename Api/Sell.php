@@ -8,7 +8,7 @@ use Pest\Db;
 class Sell extends Api
 {
     public $get = array(
-            'id' => '/^\d{24}$/'
+            'id' => '/^\S{24}$/'
     );
     
     public function get ()
@@ -21,8 +21,8 @@ class Sell extends Api
     
 
     public $post = array(
-    		'book_id' => '/^\d{24}$/',
-    		'seller_id' => '/^\d{24}$/',
+    		'book_id' => '/^\S{24}$/',
+    		'seller_id' => '/^\S{24}$/',
     		'price' =>'/^.{1,}/',
     );
     
@@ -30,10 +30,14 @@ class Sell extends Api
     {
     	$c = new Collection('sellinfo');
     	$data = Request::getInstance()->getData();
-    	$data['time'] = time();
-    	$data['status'] = 0;
+    	$data['stime'] = time();
+    	$data['status'] = '0';
     	$id = $c->save($data);
-    	Response::sendSuccess($id);
+    	if(!$id){
+    		Response::sendSuccess($id);
+    	}else{
+    		Response::sendFailure(1000);
+    	}
     }
     
     public function all()
@@ -53,7 +57,7 @@ class Sell extends Api
 	        		$params[] = $r;
 	        	}
 	        }
-	        $sql = "SELECT si.id,si.book_id,si.seller_id,si.`status`,si.price,si.campus_id,si.contact,si.college_id,si.`describe`,si.pics,si.time".
+	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,si.price,si.college,si.contact,si.`des`,si.pics,si.stime".
 	          " FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id AND (";
 	        $flag = 0;
 	        for($i = 0;$i < count($params);$i++){

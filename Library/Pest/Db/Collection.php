@@ -119,7 +119,6 @@ class Collection
         if ($insert->execute($pmarr)) {
             return (string) $id;
         } else {
-            
             return false;
         }
     }
