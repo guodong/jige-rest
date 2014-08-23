@@ -1,6 +1,7 @@
 <?php
 namespace Pest\Db;
 use Pest\Db;
+use Pest\Util;
 
 class Collection
 {
@@ -48,23 +49,11 @@ class Collection
         return $rows;
     }
 
-    private function object2array ($object)
-    {
-        if (is_object($object)) {
-            foreach ($object as $key => $value) {
-                $array[$key] = $value;
-            }
-        } else {
-            $array = $object;
-        }
-        return $array;
-    }
-
     public function save ($data)
     {
         $colunms = $this->getColumns();
         if (is_object($data)){
-            $data = $this->object2array($data);
+            $data = Util::object2array($data);
         }
         foreach ($data as $key => $value) {
             if (null === $value || ! in_array($key, $colunms))
