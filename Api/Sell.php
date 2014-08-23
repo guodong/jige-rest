@@ -71,14 +71,14 @@ class Sell extends Api
     }
     
     public $put = array(
-    		//'id' => '/^\S{24}$/',
+    		'id' => '/^\S{24}$/',
     );
     
     public function put()
     {
      	$c = new Collection('sellinfo');
      	$data = Request::getInstance()->getData();
-     	$id = $c->update('where id=?', array($data['id']), $data);
-    	Response::sendSuccess(array());
+     	$id = $c->update('where id=?', array($data->id), $data);
+    	Response::sendSuccess($id);
     }
 }
