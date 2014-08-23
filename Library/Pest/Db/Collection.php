@@ -70,7 +70,6 @@ class Collection
             if (null === $value || ! in_array($key, $colunms))
                 unset($data[$key]);
         }
-        print_r($data);
         if ((isset($data['id']))) {
             $id = $data['id'];
             unset($data['id']);
