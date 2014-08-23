@@ -38,14 +38,13 @@ class User extends Api
    
    public function put()
    {
-        return;
    		$data = Request::getInstance()->getData();
    		$c = new Collection('user');
    		$ret = $c->findOne('id=?'  ,
    				array(
                         $data['id']
                 ));
-   		if(!$ret)	{
+   		if($ret)	{
    			$id = $c->save($data);
    			if($id){
 	   			Response::sendSuccess(array(
