@@ -34,6 +34,9 @@ class Request
 				break;
 			case 'put':
 			    $data = json_decode(file_get_contents('php://input'));
+			    if (is_object($data)){
+			        $data = Util::object2array($data);
+			    }
 			    self::$data = $data;
 			    break;
 			case 'delete':
