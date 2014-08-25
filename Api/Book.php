@@ -46,19 +46,30 @@ class Book extends Api
             if ("ISBN" == $data['type']) {
                 $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
                 $obj_info = json_decode($bookinfo);
-                echo '11111';
-                var_dump($obj_info);
+                
                 if (! isset($obj_info->code)) {
                     $this->doubanToDb($obj_info, 2);
                     Response::sendSuccess(json_decode($bookinfo));
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
-                    echo '22222';
-                    var_dump($bookinfo);
-                    if ($bookinfo != 'bad isbn') {
-                        $obj_info = json_decode($bookinfo);
+                    
+                    if ($bookinfo) {
+                        $d = new \stdClass();
+                        preg_match('#<span property="v:itemreviewed">(.*)</span>#', $bookinfo, $match);
+                        $d->name = $match[1];
+                        preg_match('#<a class="" href="/search/.*">(.*)</a>#', $bookinfo, $match);
+                        $d->author = $match[1];
+                        preg_match('#<span class="pl">出版社:</span> (.*)<br/>#', $bookinfo, $match);
+                        $d->press = $match[1];
+                        preg_match('#<span class="pl">ISBN:</span> (.*)<br/>#', $bookinfo, $match);
+                        $d->isbn = $match[1];
+                        preg_match('#<span class="pl">出版年:</span> (.*)<br/>#', $bookinfo, $match);
+                        $d->edition = $match[1];
+                        preg_match('#<span class="pl">定价:</span> (.*)<br/>#', $bookinfo, $match);
+                        $d->fixedPrice = $match[1];
+                        $obj_info = $d;
                         $this->doubanToDb($obj_info, 1);
-                        Response::sendSuccess(json_decode($bookinfo));
+                        Response::sendSuccess($obj_info);
                     } else {
                         Response::sendSuccess(
                         array(
@@ -90,28 +101,12 @@ class Book extends Api
                     'discount' => 0
             );
         }else {
-            $_t = '$t';
-            $_attr = 'db:attribute';
-            $_name = '@name';
-            $this->data = $data;
-            $d = array(
-                    'name' => $data->title->$_t,
-                    'author' => $data->author[0]->name->$_t,
-                    'press' => $this->getattr('publisher'),
-                    'isbn' => $this->getattr('isbn13'),
-                    'edition' => $this->getattr('pubdate'),
-                    'fixedPrice' => $this->getattr('price'),
-                    'version' => $version,
-                    'doubanjson' => json_encode($data),
-                    'bookStatus' => 'approve',
-                    'discount' => 0
-            );
-            //print_r($d);die();
+            $d = $data;
+            $d['version'] = $version;
+            $d['bookStatus'] = 'approve';
+            $d['discount'] = 0;
         }
-        echo 'version:'.$version;
-        var_dump($d);
-        //if(null==$d->name||null==$d->isbn||null==$d->fixedPrice)
-        //	return;
+        
         $c = new Collection('bookinfo');
         $c->save($d);
         return $c->findOne('isbn=?',array($d['isbn']));
@@ -132,8 +127,8 @@ class Book extends Api
     
     private function GetBookInfoFromDoubanV1 ($isbn)
     {
-        $url = "https://api.douban.com/book/subject/isbn/{$isbn}?apikey=0c6f834296af9f37254e89c7c40edda5&alt=json";
-        echo $ct = file_get_contents($url);
+        $url = "http://book.douban.com/isbn/{$isbn}";
+        $ct = file_get_contents($url);
         return $ct;
         
         //     	$d = array(
