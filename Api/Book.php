@@ -45,9 +45,8 @@ class Book extends Api
         } else
             if ("ISBN" == $data['type']) {
                 $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
-                $obj_info = json_decode($bookinfo);
                 
-                if (! isset($obj_info->code)) {
+                if ($bookinfo) {
                     $this->doubanToDb($obj_info, 2);
                     Response::sendSuccess(json_decode($bookinfo));
                 } else {
@@ -128,7 +127,7 @@ class Book extends Api
     private function GetBookInfoFromDoubanV1 ($isbn)
     {
         $url = "http://book.douban.com/isbn/{$isbn}";
-        $ct = file_get_contents($url);
+        $ct = @file_get_contents($url);
         return $ct;
         
         //     	$d = array(
@@ -149,8 +148,7 @@ class Book extends Api
     private function GetBookInfoFromDoubanV2 ($isbn)
     {
         $url = "https://api.douban.com/v2/book/isbn/:{$isbn}?apikey=0c6f834296af9f37254e89c7c40edda5";
-        $ct = file_get_contents($url);
-        var_dump($ct);
+        $ct = @file_get_contents($url);
         return $ct;
     }
 }
