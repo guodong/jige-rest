@@ -45,10 +45,9 @@ class Book extends Api
         } else
             if ("ISBN" == $data['type']) {
                 $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
-                
                 if ($bookinfo) {
-                    $this->doubanToDb($obj_info, 2);
-                    Response::sendSuccess(json_decode($bookinfo));
+                    $result = $this->doubanToDb(json_decode($bookinfo), 2);
+                    Response::sendSuccess($result);
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
                     
