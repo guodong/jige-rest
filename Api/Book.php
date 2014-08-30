@@ -93,6 +93,7 @@ class Book extends Api
                     'isbn' => $data->isbn13,
                     'edition' => $data->pubdate,
                     'fixedPrice' => $data->price,
+            		'imgpath' => $data->images->medium,
                     'version' => $version,
                     'doubanjson' => json_encode($data),
                     'bookStatus' => 'approve',
