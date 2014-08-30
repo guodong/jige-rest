@@ -150,4 +150,24 @@ class Book extends Api
         $ct = @file_get_contents($url);
         return $ct;
     }
+    
+    public $post = array(
+    		'isbn' => '/^\S{1,}$/',
+    		'fixedPrice' => '/^\S{1,}$/',
+    		'name' => '/^\S{1,}$/',
+    		'press' => '/^\S{1,}$/',
+    );
+    
+    public function post ()
+    {
+    	$c = new Collection('bookinfo');
+    	$data = Request::getInstance()->getData();
+    	$data['bookStatus'] = '0';
+    	$id = $c->save($data);
+    	if(!$id){
+    		Response::sendSuccess($id);
+    	}else{
+    		Response::sendFailure(1000);
+    	}
+    }
 }
