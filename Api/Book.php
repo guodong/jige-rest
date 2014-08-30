@@ -157,6 +157,7 @@ class Book extends Api
     		'fixedPrice' => '/^\S{1,}$/',
     		'name' => '/^\S{1,}$/',
     		'press' => '/^\S{1,}$/',
+    		'author' => '/^\S{1,}$/',
     );
     
     public function post ()
@@ -164,8 +165,9 @@ class Book extends Api
     	$c = new Collection('bookinfo');
     	$data = Request::getInstance()->getData();
     	$data['bookStatus'] = '0';
+    	$data['discount'] = '0';
     	$id = $c->save($data);
-    	if(!$id){
+    	if($id){
     		Response::sendSuccess($id);
     	}else{
     		Response::sendFailure(1000);
