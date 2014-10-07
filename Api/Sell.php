@@ -33,7 +33,7 @@ class Sell extends Api
     	$data['stime'] = time();
     	$data['status'] = '0';
     	$id = $c->save($data);
-    	if(!$id){
+    	if($id){
     		Response::sendSuccess($id);
     	}else{
     		Response::sendFailure(1000);

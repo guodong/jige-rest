@@ -87,9 +87,11 @@ class Collection
         
         $db = Db::getInstance()->getDb();
         $r = $db->prepare($sql);
-        $r->execute($pmarr);
-        
-        return $r;
+        if ($r->execute($pmarr)) {
+        	return (string) $args[0];
+        } else {
+        	return false;
+        }
     }
 
     public function insert ($data)
