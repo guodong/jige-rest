@@ -4,18 +4,20 @@ use Pest\Api;
 use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
+use Pest\Util;
 
 class Wuser extends Api
 {
 
     public $post = array(
-            'openid' => '/^.{28}$/',
-    		'type' =>'/^\S{3,}$/',
+           // 'openid' => '/^.{28}$/',
+    		//'type' =>'/^\S{3,}$/',
     );
 
     public function post ()
     {
         $data = Request::getInstance()->getData();
+        Util::logger("wuser/post");
         if("new" == $data['type']){
         	$data['woid'] = $data['openid'];
         	$data['regtime'] = time();
@@ -57,6 +59,7 @@ class Wuser extends Api
 
     public function get ()
     {
+    	Util::logger("get");
         $c = new Collection('user');
         $data = Request::getInstance()->getData();
         $user = $c->findOne('woid = ?', 

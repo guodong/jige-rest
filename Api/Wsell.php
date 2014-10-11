@@ -4,7 +4,7 @@ use Pest\Api;
 use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
-use Pest\Db;
+
 class Wsell extends Api
 {
     public $get = array(
