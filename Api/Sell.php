@@ -5,6 +5,7 @@ use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
 use Pest\Db;
+use Pest\Util;
 class Sell extends Api
 {
     public $get = array(
@@ -48,8 +49,14 @@ class Sell extends Api
         	$data = Request::getInstance()->getData();
         	$d = $c->findAll('seller_id=?', array($data['q']));
         	Response::sendSuccess($d);
-        }else{
-	        $c = new Collection('sellinfo');
+        }else if($data['type']=='latest'){
+	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
+	          " FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT 0,";
+	        $sql = $sql.$data['count'];
+	        $ret = Db::sql($sql);
+	        Response::sendSuccess($ret);
+        }
+        else{
 	        $result = @split('#',$data['q']);
 	        $params = array();
 	        foreach($result as $r ){
@@ -57,7 +64,7 @@ class Sell extends Api
 	        		$params[] = $r;
 	        	}
 	        }
-	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,si.price,si.college,si.contact,si.`des`,si.pics,si.stime".
+	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
 	          " FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id AND (";
 	        $flag = 0;
 	        for($i = 0;$i < count($params);$i++){
