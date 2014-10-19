@@ -50,9 +50,13 @@ class Sell extends Api
         	$d = $c->findAll('seller_id=?', array($data['q']));
         	Response::sendSuccess($d);
         }else if($data['type']=='latest'){
-	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
-	          " FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT 0,";
-	        $sql = $sql.$data['count'];
+        	if(isset($data['start'])){
+        		$sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
+        				" FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT ".$data['start'].",".$data['count'];
+        	}else{
+        		$sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
+        				" FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT 0,".$data['count'];
+        	}
 	        $ret = Db::sql($sql);
 	        Response::sendSuccess($ret);
         }

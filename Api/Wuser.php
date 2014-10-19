@@ -17,7 +17,6 @@ class Wuser extends Api
     public function post ()
     {
         $data = Request::getInstance()->getData();
-        Util::logger("wuser/post");
         if("new" == $data['type']){
         	$data['woid'] = $data['openid'];
         	$data['regtime'] = time();
@@ -59,7 +58,6 @@ class Wuser extends Api
 
     public function get ()
     {
-    	Util::logger("get");
         $c = new Collection('user');
         $data = Request::getInstance()->getData();
         $user = $c->findOne('woid = ?', 

@@ -121,6 +121,7 @@ class Collection
         if ($insert->execute($pmarr)) {
             return (string) $id;
         } else {
+        	Util::logger($sql."\n".json_encode($insert->errorInfo()));
             return false;
         }
     }

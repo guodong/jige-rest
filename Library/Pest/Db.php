@@ -74,4 +74,10 @@ class Db implements Singleton
         $sth->execute($params);
         return $sth->fetchAll(\PDO::FETCH_ASSOC);
     }
+    
+    public static function sqlexec($sql, $params = array())
+    {
+    	$sth = self::getInstance()->getDb()->prepare($sql);
+    	return $sth->execute($params);
+    }
 }
