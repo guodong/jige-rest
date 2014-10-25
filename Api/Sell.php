@@ -51,11 +51,11 @@ class Sell extends Api
         	Response::sendSuccess($d);
         }else if($data['type']=='latest'){
         	if(isset($data['start'])){
-        		$sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
-        				" FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT ".$data['start'].",".$data['count'];
+        		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
+        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT ".$data['start'].",".$data['count'];
         	}else{
-        		$sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
-        				" FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id ORDER BY stime DESC LIMIT 0,".$data['count'];
+        		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
+        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT 0,".$data['count'];
         	}
 	        $ret = Db::sql($sql);
 	        Response::sendSuccess($ret);
@@ -68,8 +68,8 @@ class Sell extends Api
 	        		$params[] = $r;
 	        	}
 	        }
-	        $sql = "SELECT bi.imgpath, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,si.college,si.contact,si.`des`,si.pics,si.stime".
-	          " FROM bookinfo AS bi ,sellinfo AS si WHERE bi.id = si.book_id AND (";
+	        $sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
+	          " FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE bi.id = si.book_id AND si.seller_id = u.id AND (";
 	        $flag = 0;
 	        for($i = 0;$i < count($params);$i++){
 	        	if($flag == 0){
