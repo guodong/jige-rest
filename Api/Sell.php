@@ -9,15 +9,22 @@ use Pest\Util;
 class Sell extends Api
 {
     public $get = array(
-            'id' => '/^\S{24}$/'
+            //'id' => '/^\S{24}$/'
     );
     
     public function get ()
     {
-        $c = new Collection('sellinfo');
         $data = Request::getInstance()->getData();
-        $d = $c->findOne('id=?', array($data['id']));
-        Response::sendSuccess($d);
+        if($data['type'] == 'bookid'){
+        	$sql = "SELECT si.price AS price,u.tel AS tel,u.nickname AS nickname,u.college AS college,u.campus AS campus,si.off AS off 	FROM sellinfo AS si ,".
+        	"`user` AS u WHERE si.seller_id = u.id AND si.book_id = '".$data['bookid']."' ORDER BY si.stime DESC";
+        	$ret = Db::sql($sql);
+	        Response::sendSuccess($ret);
+        }else{
+        	$c = new Collection('sellinfo');
+	        $d = $c->findOne('id=?', array($data['id']));
+	        Response::sendSuccess($d);
+        }
     }
     
 
@@ -56,6 +63,19 @@ class Sell extends Api
         	}else{
         		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
         				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT 0,".$data['count'];
+        	}
+	        $ret = Db::sql($sql);
+	        Response::sendSuccess($ret);
+        }else if($data['type']=='group'){
+        	if(!isset($data['count'])){
+        		$data['count'] = '100';
+        	}
+        	if(isset($data['start'])){
+        		$sql = "SELECT bi.id AS bookid,bi.`name` AS `name`,bi.author AS author,bi.press AS press,bi.fixedPrice AS fixedPrice,bi.imgpath AS imgpath,Count(si.book_id) AS count FROM bookinfo AS bi ,".
+						"sellinfo AS si WHERE si.book_id = bi.id GROUP BY si.book_id ORDER BY bi.id ASC LIMIT ".$data['start'].",".$data['count'];
+        	}else{
+        		$sql = "SELECT bi.id AS bookid,bi.`name` AS `name`,bi.author AS author,bi.press AS press,bi.fixedPrice AS fixedPrice,bi.imgpath AS imgpath,Count(si.book_id) AS count FROM bookinfo AS bi ,".
+						"sellinfo AS si WHERE si.book_id = bi.id GROUP BY si.book_id ORDER BY bi.id ASC LIMIT 0,".$data['count'];
         	}
 	        $ret = Db::sql($sql);
 	        Response::sendSuccess($ret);
