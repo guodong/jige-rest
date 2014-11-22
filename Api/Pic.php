@@ -1,9 +1,6 @@
 <?php
 namespace Api;
 use Pest\Api;
-use Pest\Request;
-use Pest\Db\Collection;
-use Pest\Response;
 
 class Pic extends Api
 {

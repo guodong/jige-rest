@@ -4,7 +4,6 @@ use Pest\Api;
 use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
-use Pest\Util;
 
 class Wuser extends Api
 {

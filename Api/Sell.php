@@ -5,7 +5,7 @@ use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
 use Pest\Db;
-use Pest\Util;
+
 class Sell extends Api
 {
     public $get = array(
@@ -26,20 +26,22 @@ class Sell extends Api
 	        Response::sendSuccess($d);
         }
     }
-    
 
     public $post = array(
-    		'book_id' => '/^\S{24}$/',
+    		/*'book_id' => '/^\S{24}$/',
     		'seller_id' => '/^\S{24}$/',
-    		'price' =>'/^.{1,}/',
+    		'price' =>'/^.{1,}/',*/
     );
     
     public function post ()
     {
     	$c = new Collection('sellinfo');
     	$data = Request::getInstance()->getData();
-    	$data['stime'] = time();
-    	$data['status'] = '0';
+    	if(!isset($data['status']))
+    	{
+    		$data['stime'] = time();
+    		$data['status'] = '0';
+    	}
     	$id = $c->save($data);
     	if($id){
     		Response::sendSuccess($id);
