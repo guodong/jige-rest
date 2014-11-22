@@ -8,7 +8,7 @@ class Application
     {
         if (substr($class, 0, 4) === "Pest") {
             $path = dirname(dirname(__FILE__)) . '/' .
-                     str_replace("\\", DIRECTORY_SEPARATOR, $class) . '.php';
+            	str_replace("\\", DIRECTORY_SEPARATOR, $class) . '.php';
             return require_once $path;
         }
         $incpaths = get_include_path();
