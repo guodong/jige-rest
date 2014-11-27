@@ -29,15 +29,27 @@ class Sell extends Api
     }
     
     public $post = array(
-    		'title' => '/^\S{1,}$/',
-    		'seller_id' => '/^\S{24}$/',
-    		'price' =>'/^.{1,}/',
+    		//'title' => '/^\S{1,}$/',
+    		//'seller_id' => '/^\S{24}$/',
+    		//'price' =>'/^.{1,}/',
     );
     
     public function post ()
     {
-    	$c = new Collection('oldproduct');
     	$data = Request::getInstance()->getData();
+    	if(isset($data["openid"])){
+    		$u = new Collection('user');
+    		$user = $u->findOne("woid = ?",array($data["openid"]));
+    		if ($user) {
+    			$data["seller_id"] = $user["id"];
+    			$data["college"] = $user["college"];
+    			$data["campus"] = $user["campus"];
+    		}else{
+    			Response::sendFailure(1003);
+    			exit();
+    		}
+        } 
+    	$c = new Collection('oldproduct');
     	if(!isset($data['status']))
     	{
     		$data['stime'] = time();
@@ -60,9 +72,27 @@ class Sell extends Api
         	$data['count'] = "10";//默认返回10个
         }
         if($data['type']=='uid'){
-        	$data = Request::getInstance()->getData();
-        	$d = $c->findAll('seller_id=?', array($data['q']));
-        	Response::sendSuccess($d);
+        	if(!isset($data['status'])){
+        		$sql = "SELECT o.id,o.title,o.content,o.imgpath,o.`status`,o.price,u.tel,u.college,u.campus,o.stime,o.otime FROM oldproduct AS o ,`user` AS u".
+          			" WHERE o.status = 0 AND o.seller_id = u.id AND o.seller_id = '".$data['q']."'";
+        	}
+        	else{
+        		$sql = "SELECT o.id,o.title,o.content,o.imgpath,o.`status`,o.price,u.tel,u.college,u.campus,o.stime,o.otime FROM oldproduct AS o ,`user` AS u".
+          			" WHERE o.seller_id = u.id AND o.seller_id = '".$data['q']."'";
+        	}
+        	$ret = Db::sql($sql);
+        	Response::sendSuccess($ret);
+        }else if($data['type']=='openid'){
+        	if(!isset($data['status'])){
+        		$sql = "SELECT o.id,o.title,o.content,o.imgpath,o.`status`,o.price,u.tel,u.college,u.campus,o.stime,o.otime FROM oldproduct AS o ,`user` AS u".
+          			" WHERE o.status = 0 AND o.seller_id = u.id AND u.woid = '".$data['q']."'";
+        	}
+        	else{
+        		$sql = "SELECT o.id,o.title,o.content,o.imgpath,o.`status`,o.price,u.tel,u.college,u.campus,o.stime,o.otime FROM oldproduct AS o ,`user` AS u".
+        			" WHERE o.seller_id = u.id AND u.woid = '".$data['q']."'";
+        	}
+        	$ret = Db::sql($sql);
+        	Response::sendSuccess($ret);
         }else if($data['type']=='latest'){
         	if(isset($data['start'])){
         		$sql = "SELECT o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
@@ -86,10 +116,10 @@ class Sell extends Api
 	        $flag = 0;
 	        for($i = 0;$i < count($params);$i++){
 	        	if($flag == 0){
-	        		$sql = $sql . 'bi.`title` LIKE \'%'.$params[$i].'%\'';
+	        		$sql = $sql . 'o.`title` LIKE \'%'.$params[$i].'%\'';
 	        		$flag = 1;
 	        	}else{
-	        		$sql = $sql . ' OR bi.`title` LIKE \'%'.$params[$i].'%\'';
+	        		$sql = $sql . ' OR o.`title` LIKE \'%'.$params[$i].'%\'';
 	        	}
 	        }
 	        $sql = $sql.') ORDER BY o.stime DESC ';

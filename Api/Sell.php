@@ -35,16 +35,27 @@ class Sell extends Api
     
     public function post ()
     {
-    	$c = new Collection('sellinfo');
     	$data = Request::getInstance()->getData();
-    	if(!isset($data['status']))
-    	{
-    		$data['stime'] = time();
-    		$data['status'] = '0';
-    	}
-    	$id = $c->save($data);
-    	if($id){
-    		Response::sendSuccess($id);
+    	$u = new Collection('user');
+    	$userinfo = $u->findOne('id=?', array($data['seller_id']));
+    	if($userinfo){
+    		$data['college'] = $userinfo['college'].$userinfo['campus'];
+    		$data['contact'] = $userinfo['tel'];
+	    	$b = new Collection('bookinfo');
+	    	$bookinfo = $b->findOne('id = ?',array($data['book_id']));
+	    	$data['off'] = round($data['price']*10/$bookinfo['fixedPrice'],1);
+	    	if(!isset($data['status']))
+	    	{
+	    		$data['stime'] = time();
+	    		$data['status'] = '0';
+	    	}
+	    	$c = new Collection('sellinfo');
+	    	$id = $c->save($data);
+	    	if($id){
+	    		Response::sendSuccess($id);
+	    	}else{
+	    		Response::sendFailure(1000);
+	    	}
     	}else{
     		Response::sendFailure(1000);
     	}

@@ -53,7 +53,6 @@ class Db implements Singleton
 
     private function connMysql ($configs)
     {
-        
         try {
             $dbh = new PDO(
                     'mysql:host=' . $configs['host'] . ';dbname=' .

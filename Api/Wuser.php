@@ -4,6 +4,7 @@ use Pest\Api;
 use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
+use Pest\Db;
 
 class Wuser extends Api
 {
@@ -64,7 +65,26 @@ class Wuser extends Api
                         $data['openid']
                 ));
         if ($user) {
-            Response::sendSuccess(
+        	if("count" == $data["type"]){
+        		if(!isset($data["status"])){
+	        		$sql = "SELECT COUNT(id) AS count FROM sellinfo WHERE status = 0 AND seller_id = '".$user["id"]."'";
+	        		$ret1 = Db::sql($sql);
+	        		$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE status = 0 AND seller_id = '".$user["id"]."'";
+	        		$ret2 = Db::sql($sql);
+        		}else{
+        			$sql = "SELECT COUNT(id) AS count FROM sellinfo WHERE seller_id = '".$user["id"]."'";
+        			$ret1 = Db::sql($sql);
+        			$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE seller_id = '".$user["id"]."'";
+        			$ret2 = Db::sql($sql);
+        		}
+        		Response::sendSuccess(
+	        		array(
+		        		"oldbook" =>$ret1[0]["count"],
+		        		"oldproduct" => $ret2[0]["count"]
+	        		)
+        		);
+        	}else{
+            	Response::sendSuccess(
                     array(
                             'id' => $user["id"],
                             'name' => $user["name"],
@@ -78,6 +98,7 @@ class Wuser extends Api
                             'campus' => $user["campus"],
                             'config' => $user["config"]
                     ));
+        	}
         } else {
             Response::sendSuccess(
                     array(
