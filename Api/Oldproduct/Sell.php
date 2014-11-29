@@ -95,10 +95,10 @@ class Sell extends Api
         	Response::sendSuccess($ret);
         }else if($data['type']=='latest'){
         	if(isset($data['start'])){
-        		$sql = "SELECT o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
+        		$sql = "SELECT o.id,o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
           		" `user` AS u WHERE o.status = 0  AND o.seller_id = u.id ORDER BY o.stime DESC LIMIT ".$data['start'].", ".$data['count'];
         	}else{
-        		$sql = "SELECT o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
+        		$sql = "SELECT o.id,o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
           		" `user` AS u WHERE o.status = 0  AND o.seller_id = u.id ORDER BY o.stime DESC LIMIT 0, ".$data['count'];
         	}
         	$ret = Db::sql($sql);
@@ -111,7 +111,7 @@ class Sell extends Api
 	        		$params[] = $r;
 	        	}
 	        }
-	        $sql = "SELECT o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
+	        $sql = "SELECT o.id,o.title, o.content, o.imgpath, u.nickname, u.campus, u.college, u.tel, o.price, o.stime FROM oldproduct AS o ,".
           		" `user` AS u WHERE o.status = 0  AND o.seller_id = u.id AND (";
 	        $flag = 0;
 	        for($i = 0;$i < count($params);$i++){
