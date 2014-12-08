@@ -15,9 +15,14 @@ class Sell extends Api
     public function get ()
     {
         $data = Request::getInstance()->getData();
+        if(!isset($data['college'])||!isset($data['campus'])){
+        	$area = " ";
+        }else{
+        	$area = " AND u.college = '".$data['college']."' AND u.campus = '".$data['campus']."'";
+        }
         if($data['type'] == 'bookid'){
         	$sql = "SELECT si.price AS price,u.tel AS tel,u.nickname AS nickname,u.college AS college,u.campus AS campus,si.off AS off 	FROM sellinfo AS si ,".
-        	"`user` AS u WHERE si.status='0' AND  si.seller_id = u.id AND si.book_id = '".$data['bookid']."' ORDER BY si.stime DESC";
+        	"`user` AS u WHERE si.status='0'  ".$area." AND  si.seller_id = u.id AND si.book_id = '".$data['bookid']."' ORDER BY si.stime DESC";
         	$ret = Db::sql($sql);
 	        Response::sendSuccess($ret);
         }else{
@@ -64,18 +69,26 @@ class Sell extends Api
     public function all()
     {
         $data = Request::getData();
+        if(!isset($data['college'])||!isset($data['campus'])){
+        	$area = " ";
+        }else{
+        	$area = " AND u.college = '".$data['college']."' AND u.campus = '".$data['campus']."'";
+        }
         if($data['type']=='uid'){
         	$c = new Collection('sellinfo');
         	$data = Request::getInstance()->getData();
         	$d = $c->findAll('seller_id=?', array($data['q']));
         	Response::sendSuccess($d);
         }else if($data['type']=='latest'){
+        	if(!isset($data['count'])){
+        		$data['count'] = '10';
+        	}
         	if(isset($data['start'])){
         		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
-        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0' AND bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT ".$data['start'].",".$data['count'];
+        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0' ".$area." AND bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT ".$data['start'].",".$data['count'];
         	}else{
         		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
-        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0' AND bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT 0,".$data['count'];
+        				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0'  ".$area." AND bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT 0,".$data['count'];
         	}
         }else if($data['type']=='group'){
         	if(!isset($data['count'])){
@@ -90,7 +103,7 @@ class Sell extends Api
 					}
 				}
 				$sql = "SELECT bi.id AS bookid,bi.`name` AS `name`,bi.author AS author,bi.press AS press,bi.fixedPrice AS fixedPrice,bi.imgpath AS imgpath,Count(si.book_id) AS count FROM bookinfo AS bi ,".
-						"sellinfo AS si WHERE si.status='0' AND si.book_id = bi.id AND (";
+						"sellinfo AS si ,user AS u WHERE  si.seller_id = u.id AND si.status='0'  ".$area." AND si.book_id = bi.id AND (";
 				$flag = 0;
 				for($i = 0;$i < count($params);$i++){
 					if($flag == 0){
@@ -110,35 +123,41 @@ class Sell extends Api
 			}else{
 	        	if(isset($data['start'])){
 	        		$sql = "SELECT bi.id AS bookid,bi.`name` AS `name`,bi.author AS author,bi.press AS press,bi.fixedPrice AS fixedPrice,bi.imgpath AS imgpath,Count(si.book_id) AS count FROM bookinfo AS bi ,".
-							"sellinfo AS si WHERE si.status='0' AND si.book_id = bi.id GROUP BY si.book_id ORDER BY Count(si.book_id) DESC LIMIT ".$data['start'].",".$data['count'];
+							"sellinfo AS si ,user AS u WHERE si.seller_id = u.id AND  si.status='0'  ".$area." AND si.book_id = bi.id GROUP BY si.book_id ORDER BY Count(si.book_id) DESC LIMIT ".$data['start'].",".$data['count'];
 	        	}else{
 	        		$sql = "SELECT bi.id AS bookid,bi.`name` AS `name`,bi.author AS author,bi.press AS press,bi.fixedPrice AS fixedPrice,bi.imgpath AS imgpath,Count(si.book_id) AS count FROM bookinfo AS bi ,".
-							"sellinfo AS si WHERE si.status='0' AND si.book_id = bi.id GROUP BY si.book_id ORDER BY Count(si.book_id) DESC LIMIT 0,".$data['count'];
+							"sellinfo AS si ,user AS u WHERE si.seller_id = u.id AND  si.status='0'  ".$area." AND si.book_id = bi.id GROUP BY si.book_id ORDER BY Count(si.book_id) DESC LIMIT 0,".$data['count'];
 	        	}
 			}
 	        $ret = Db::sql($sql);
-	        Response::sendSuccess($ret);
+	         Response::sendSuccess($ret);
         }
         else{
-	        $result = @split('#',$data['q']);
-	        $params = array();
-	        foreach($result as $r ){
-	        	if($r != ""){
-	        		$params[] = $r;
-	        	}
-	        }
-	        $sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
-	          " FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0' AND bi.id = si.book_id AND si.seller_id = u.id AND (";
-	        $flag = 0;
-	        for($i = 0;$i < count($params);$i++){
-	        	if($flag == 0){
-	        		$sql = $sql . 'bi.`search` LIKE \'%'.$params[$i].'%\'';
-	        		$flag = 1;
-	        	}else{
-	        		$sql = $sql . ' OR bi.`search` LIKE \'%'.$params[$i].'%\'';
-	        	}
-	        }
-	        $sql = $sql.')';
+        	if(!isset($data['q'])||$data['q'] == ""||$data['q'] == null){
+        		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
+		          " FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0'  ".$area." AND bi.id = si.book_id AND si.seller_id = u.id";
+        	}else{
+		        $result = @split('#',$data['q']);
+		        $params = array();
+		        foreach($result as $r ){
+		        	if($r != ""){
+		        		$params[] = $r;
+		        	}
+		        }
+
+		        $sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
+		          " FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0'  ".$area." AND bi.id = si.book_id AND si.seller_id = u.id AND (";
+		        $flag = 0;
+		        for($i = 0;$i < count($params);$i++){
+		        	if($flag == 0){
+		        		$sql = $sql . 'bi.`search` LIKE \'%'.$params[$i].'%\'';
+		        		$flag = 1;
+		        	}else{
+		        		$sql = $sql . ' OR bi.`search` LIKE \'%'.$params[$i].'%\'';
+		        	}
+		        }
+		        $sql = $sql.')';
+        	}
 	        $ret = Db::sql($sql);
 	        Response::sendSuccess($ret);
         }
