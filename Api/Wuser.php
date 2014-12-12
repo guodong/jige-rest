@@ -5,6 +5,7 @@ use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
 use Pest\Db;
+use Pest\Util;
 
 class Wuser extends Api
 {
@@ -30,8 +31,18 @@ class Wuser extends Api
         		return;
         	}
         	$id = $c->save($data);
+        	if(!$id){
+        		Response::sendFailure(1000);
+        		return;
+        	}
         	$data = $c->findOne('id=?', array($id));
-        	Response::sendSuccess($data);
+        	if($data){
+        		Response::sendSuccess($data);
+        		return;
+        	}else{
+        		Response::sendFailure(1000);
+        		return;
+        	}
         }else if("update" == $data['type']){
         	$data['woid'] = $data['openid'];
         	unset($data['openid']);
@@ -106,6 +117,4 @@ class Wuser extends Api
                     ));
         }
     }
-
-
 }

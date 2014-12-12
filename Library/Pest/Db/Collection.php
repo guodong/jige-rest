@@ -100,7 +100,8 @@ class Collection
         foreach ($data as $k => $v) {
             $pmarr[] = $v;
         }
-        $id = new \MongoId(null);
+        //$id = new \MongoId(null);
+        $id = substr(strtoupper(md5(uniqid(mt_rand(), true))),1,24);
         array_push($pmarr, (string) $id);
         
         $keys = array_keys($data);

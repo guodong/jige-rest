@@ -90,6 +90,8 @@ class Sell extends Api
         		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
         				" FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0'  ".$area." AND bi.id = si.book_id AND si.seller_id = u.id ORDER BY stime DESC LIMIT 0,".$data['count'];
         	}
+        	$ret = Db::sql($sql);
+        	Response::sendSuccess($ret);
         }else if($data['type']=='group'){
         	if(!isset($data['count'])){
         		$data['count'] = '100';
@@ -131,8 +133,7 @@ class Sell extends Api
 			}
 	        $ret = Db::sql($sql);
 	         Response::sendSuccess($ret);
-        }
-        else{
+        }else{
         	if(!isset($data['q'])||$data['q'] == ""||$data['q'] == null){
         		$sql = "SELECT bi.imgpath,u.nickname, si.id,si.book_id,si.seller_id,si.`status`,bi.fixedPrice AS `fixedprice`,bi.author,bi.press,bi.name,si.price,si.off,u.college,u.campus,u.tel,si.`des`,si.pics,si.stime".
 		          " FROM bookinfo AS bi ,sellinfo AS si ,user AS u WHERE si.status='0'  ".$area." AND bi.id = si.book_id AND si.seller_id = u.id";
