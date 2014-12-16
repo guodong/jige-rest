@@ -5,16 +5,17 @@ use Pest\Application;
 use Pest\Util;
 
 define('PATH_BASE', realpath('../') . '/');
+define('API_ROOT',realpath('./').'/');
 define('PATH_LIBRARY', PATH_BASE . 'Library/');
 
 require PATH_LIBRARY . 'Pest/Application.php';
 $config = array(
         'db' => array(
                 'driver' => 'Pdo',
-                'host' => 'olege.com',
-                'username' => 'jige',
-                'password' => 'jigedb',
-                'dbname' => 'jige'
+                'host' => 'localhost',
+                'username' => 'root',
+                'password' => 'mallschool',
+                'dbname' => 'mallschool'
         ),
         'apiDir' => PATH_BASE,
 );

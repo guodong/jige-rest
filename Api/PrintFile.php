@@ -57,7 +57,7 @@ class PrintFile extends Api
 	    		$msg .= " File Name: " . $_FILES['fileToUpload']['name'] . ", ";
 	    		$msg .= " File Size: " . @filesize($_FILES['fileToUpload']['tmp_name']);
 	    		//copy file
-	    		$uploads_dir = '/mnt/www/jige-rest/public/static/uploads/';
+	    		$uploads_dir =API_ROOT.'uploads/';
 	    		$tmp_name = $_FILES["fileToUpload"]["name"];
 	    		$id = substr(strtoupper(md5(uniqid(mt_rand(), true))),1,24);
 	    		$name = $id.$tmp_name;
