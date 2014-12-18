@@ -53,6 +53,8 @@ class Response
 			1003 => 'Invalid Uid',
 			1004 => 'Invalid Parameter',
 			1005 => 'Repeat',
+			1006 => 'Inexistent',
+			1007 => 'File is inexistent',
 	);
 
 	private $status = 200;

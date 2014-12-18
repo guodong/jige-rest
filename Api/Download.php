@@ -18,12 +18,12 @@ class download extends Api
         $p = new Collection('printorder');
         $ret = $p->findOne("id = ?",array($data["id"]));
         if(!$ret){
-        	Response::sendFailure(1000);
+        	Response::sendFailure(1006);
         }else{
         	$file_name = $ret["filename"];
         	$file_dir = $ret["filepath"];
         	if (!file_exists($file_dir)) { //判断文件是否存在
-        		Response::sendFailure(1000);
+        		Response::sendFailure(1007);
         	} else {
         		$file = fopen($file_dir,"r"); //打开文件
         		// 输入文件头
