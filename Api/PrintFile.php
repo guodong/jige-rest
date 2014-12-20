@@ -121,7 +121,9 @@ class PrintFile extends Api
     		$c = new Collection('printorder');
     		$ret = $c->save($tmpdata);
     		if($ret){
-    			Response::sendSuccess($obj->{'ticket'});
+    			Response::sendSuccess(array(
+    				"ticket" => $obj->{'ticket'},
+    			));
     		}else{
     			Response::sendFailure(1008);
     		}
