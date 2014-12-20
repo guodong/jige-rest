@@ -103,7 +103,9 @@ class PrintFile extends Api
     			$ret = Db::sqlexec($sql);
     			Util::logger($ret);
     			if($ret){
-    				Response::sendSuccess($ret);
+    				Response::sendSuccess(array(
+    				"openid"=>$data["openid"],
+    				));
     			}else{
     				Response::sendFailure(1000);
     			}
