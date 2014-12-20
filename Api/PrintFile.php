@@ -88,6 +88,35 @@ class PrintFile extends Api
     			$c = new Collection('printorder');
     			$ret = $c->save($tmpdata);
     			if($ret){
+    				$d = $c->findOne("id = ?",array($data["id"]));
+    				if($d&&!empty($d["openid"])){
+    					$postdata = array(
+    							"touser" =>$d["openid"],
+    							"template_id"=>"IgGelqxRTCklTkhsQRUEs5cVkUl6T1fdtcOMPfxtN8w",
+    							"url"=>"",
+    							"topcolor"=>"#FF0000",
+    							"data" => array(
+    									"first" => array(
+    											"value" =>"打印进度通知",
+    											"color" => "#173177"，
+    									),
+    									"OrderSn" => array(
+    											"value" =>$d["scene_id"],
+    											"color" => "#173177"，
+    									),
+    									"OrderStatus" => array(
+    											"value" =>$data["status"],
+    											"color" => "#173177"，
+    									),
+    									"remark" => array(
+    											"value" =>"您的文档已经打印完毕，请尽快到门店领取",
+    											"color" => "#173177"
+    									),
+    							),
+    					);
+    					$url = SAE_ROOT."outjson/post.php";
+    					Util::http_post($url, $postdata);
+    				}
     				Response::sendSuccess($ret);
     			}else{
     				Response::sendFailure(1000);
@@ -99,12 +128,10 @@ class PrintFile extends Api
     			return;
     		}else{
     			$sql = "UPDATE printorder SET openid = '".$data["openid"]."' WHERE scene_id = '".$data["scene_id"]."'";
-    			Util::logger($sql);
     			$ret = Db::sqlexec($sql);
-    			Util::logger($ret);
     			if($ret){
     				Response::sendSuccess(array(
-    				"openid"=>$data["openid"],
+    					"openid"=>$data["openid"],
     				));
     			}else{
     				Response::sendFailure(1000);
@@ -127,7 +154,6 @@ class PrintFile extends Api
     		$qrcodeurl = SAE_ROOT."outjson/GetQRCodeTicket.php";
     		$qrcode = file_get_contents($qrcodeurl);
     		$obj = json_decode($qrcode);
-    		Util::logger($obj->{'scene_id'});
     		if("0" !=($obj->{'result'})){
     			Util::logger("sae api返回异常".$qrcode);
     			Response::sendFailure(1000);
