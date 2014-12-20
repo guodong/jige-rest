@@ -110,7 +110,7 @@ class PrintFile extends Api
     		$qrcode = file_get_contents($qrcodeurl);
     		$obj = json_decode($qrcode);
     		Util::logger($obj->{'result'});
-    		if(empty($obj->{'result'})||"0" !=$obj->{'result'}){
+    		if(empty($obj->{'result'})||0 !=$obj->{'result'}){
     			Response::sendFailure(1000);
     			return;
     		}else{
