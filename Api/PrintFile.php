@@ -99,7 +99,8 @@ class PrintFile extends Api
     			return;
     		}else{
     			$sql = "UPDATE printorder SET openid = '".$data["openid"]."' WHERE scene_id = '".$data["scene_id"]."'";
-    			$ret = Db::sql($sql);
+    			Util::logger($sql);
+    			$ret = Db::sqlexec($sql);
     			Util::logger($ret);
     			if($ret){
     				Response::sendSuccess($ret);
