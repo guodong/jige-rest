@@ -105,6 +105,7 @@ class PrintFile extends Api
     					array(
     							$scene_id
     					), $data);
+    			Util::logger($ret);
     			if($ret){
     				Response::sendSuccess($ret);
     			}else{
