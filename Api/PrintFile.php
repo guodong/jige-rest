@@ -16,6 +16,7 @@ class PrintFile extends Api
     public function post ()
     {
     	$data = Request::getInstance()->getData();
+    	Util::logger("post type".$data["type"]);
     	if("file" == $data["type"]){
 	    	$error = "";
 	    	$msg = "";
@@ -93,6 +94,7 @@ class PrintFile extends Api
     			}
     		}
     	}else if("qrcode" == $data["type"]){
+    		Util::logger("post qrcode");
     		if(empty($data["scene_id"])){
     			Response::sendFailure(1000);
     			return;
