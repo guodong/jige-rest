@@ -4,6 +4,7 @@ use Pest\Db\Collection;
 use Pest\Api;
 use Pest\Response;
 use Pest\Request;
+use Pest\Util;
 
 class PrintFile extends Api
 {
@@ -105,11 +106,14 @@ class PrintFile extends Api
     				"fileid" => $data['uploadfileid'],
     				"filepath" => $data['uploadfilepath'],
     		);
-    		$qrcodeurl = SAE_ROOT;
+    		$qrcodeurl = SAE_ROOT."outjson/GetQRCodeTicket.php";
+    		Util::logger($qrcodeurl);
     		$qrcode = file_get_contents($qrcodeurl);
+    		Util::logger($qrcode);
     		$object = json_decode($qrcode);
     		if(empty($obj->{'result'})||'0' !=$obj->{'result'}){
     			Response::sendFailure(1000);
+    			return;
     		}else{
     			$tmpdata['qrcodeid'] = $obj->{'sceen_id'};
     		}

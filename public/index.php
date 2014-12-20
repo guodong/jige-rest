@@ -7,7 +7,7 @@ use Pest\Util;
 define('PATH_BASE', realpath('../') . '/');
 define('API_ROOT',realpath('./').'/');
 define('PATH_LIBRARY', PATH_BASE . 'Library/');
-define('SAE_ROOT','http://1.mallschoolwx.sinaapp.com/outjson/GetQRCodeTicket.php');
+define('SAE_ROOT','http://1.mallschoolwx.sinaapp.com/');
 
 require PATH_LIBRARY . 'Pest/Application.php';
 $config = array(

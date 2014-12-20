@@ -94,7 +94,6 @@ class Sell extends Api
         	$ret = Db::sql($sql);
         	Response::sendSuccess($ret);
         }else if($data['type']=='group'){
-        	Util::logger("test");
         	if(!isset($data['count'])){
         		$data['count'] = '100';
         	}
