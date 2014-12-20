@@ -98,19 +98,19 @@ class PrintFile extends Api
     							"data" => array(
     									"first" => array(
     											"value" =>"打印进度通知",
-    											"color" => "#428bca",
+    											"color" => "#666",
     									),
     									"OrderSn" => array(
     											"value" =>$d["scene_id"],
-    											"color" => "#f0ad4e",
+    											"color" => "#222",
     									),
     									"OrderStatus" => array(
     											"value" =>$data["status"],
-    											"color" => "#f0ad4e",
+    											"color" => "#428bca",
     									),
     									"remark" => array(
     											"value" =>urlencode("\\n亲爱的同学:\\n您的文档《".$d["filename"]."》已经打印完毕，请尽快到门店领取"),
-    											"color" => "#777",
+    											"color" => "#aaa",
     									),
     							),
     					);
