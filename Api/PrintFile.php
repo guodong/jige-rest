@@ -121,9 +121,7 @@ class PrintFile extends Api
     		$c = new Collection('printorder');
     		$ret = $c->save($tmpdata);
     		if($ret){
-    			Response::sendSuccess(array(
-    				"qrcodeid" => $tmpdata['qrcodeid'],
-    			));
+    			Response::sendSuccess($obj->{'ticket'});
     		}else{
     			Response::sendFailure(1008);
     		}
