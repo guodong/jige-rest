@@ -110,17 +110,20 @@ class PrintFile extends Api
     		$qrcodeurl = SAE_ROOT."outjson/GetQRCodeTicket.php";
     		$qrcode = file_get_contents($qrcodeurl);
     		$obj = json_decode($qrcode);
+    		Util::logger($obj->{'scene_id'});
     		if("0" !=($obj->{'result'})){
     			Util::logger("sae api返回异常".$qrcode);
     			Response::sendFailure(1000);
     			return;
     		}else{
-    			$tmpdata['qrcodeid'] = $obj->{'sceen_id'};
+    			$tmpdata['qrcodeid'] = $obj->{'scene_id'};
     		}
     		$c = new Collection('printorder');
     		$ret = $c->save($tmpdata);
     		if($ret){
-    			Response::sendSuccess($tmpdata['qrcodeid']);
+    			Response::sendSuccess(array(
+    				"qrcodeid" => $tmpdata['qrcodeid'],
+    			));
     		}else{
     			Response::sendFailure(1008);
     		}
