@@ -55,6 +55,7 @@ class Response
 			1005 => 'Repeat',
 			1006 => 'Inexistent',
 			1007 => 'File is inexistent',
+			1008 => 'Save Error',
 	);
 
 	private $status = 200;

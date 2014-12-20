@@ -111,7 +111,8 @@ class PrintFile extends Api
     		$qrcode = file_get_contents($qrcodeurl);
     		$obj = json_decode($qrcode);
     		Util::logger($obj->{'result'});
-    		if(empty($obj->{'result'})||0 !=$obj->{'result'}){
+    		if(empty($obj->{'result'})||"0" !=$obj->{'result'}){
+    			Util::logger("sae api返回异常".$obj);
     			Response::sendFailure(1000);
     			return;
     		}else{
@@ -122,7 +123,7 @@ class PrintFile extends Api
     		if($ret){
     			Response::sendSuccess($tmpdata['qrcodeid']);
     		}else{
-    			Response::sendFailure(1000);
+    			Response::sendFailure(1008);
     		}
     	}
     }
