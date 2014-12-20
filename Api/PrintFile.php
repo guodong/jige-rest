@@ -131,7 +131,7 @@ class PrintFile extends Api
     			Response::sendFailure(1000);
     			return;
     		}else{
-    			$tmpdata['qrcodeid'] = $obj->{'scene_id'};
+    			$tmpdata['scene_id'] = $obj->{'scene_id'};
     		}
     		$c = new Collection('printorder');
     		$ret = $c->save($tmpdata);
