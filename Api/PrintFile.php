@@ -115,6 +115,7 @@ class PrintFile extends Api
     							),
     					);
     					$url = SAE_ROOT."outjson/SendTemplateMessage.php";
+    					Util::logger(json_encode($postdata));
     					Util::http_post($url, array(
     						"data" =>json_encode($postdata),
     					));
