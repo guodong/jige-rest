@@ -16,7 +16,6 @@ class PrintFile extends Api
     public function post ()
     {
     	$data = Request::getInstance()->getData();
-    	Util::logger("post type".$data["type"]);
     	if("file" == $data["type"]){
 	    	$error = "";
 	    	$msg = "";
@@ -94,7 +93,6 @@ class PrintFile extends Api
     			}
     		}
     	}else if("qrcode" == $data["type"]){
-    		Util::logger("post qrcode");
     		if(empty($data["scene_id"])){
     			Response::sendFailure(1000);
     			return;
@@ -102,7 +100,8 @@ class PrintFile extends Api
     			$scene_id = $data["scene_id"];
     			unset($data["scene_id"]);
     			unset($data["type"]);
-    			$ret =  $this->update('where scene_id = ?',
+    			$c = new Collection('printorder');
+    			$ret =  $c->update('where scene_id = ?',
     					array(
     							$scene_id
     					), $data);
