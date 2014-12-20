@@ -5,6 +5,7 @@ use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
 use Pest\Db;
+use Pest\Util;
 
 class Sell extends Api
 {
@@ -93,6 +94,7 @@ class Sell extends Api
         	$ret = Db::sql($sql);
         	Response::sendSuccess($ret);
         }else if($data['type']=='group'){
+        	Util::logger("test");
         	if(!isset($data['count'])){
         		$data['count'] = '100';
         	}

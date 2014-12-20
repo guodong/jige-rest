@@ -105,15 +105,22 @@ class PrintFile extends Api
     				"fileid" => $data['uploadfileid'],
     				"filepath" => $data['uploadfilepath'],
     		);
+    		$qrcodeurl = SAE_ROOT;
+    		$qrcode = file_get_contents($qrcodeurl);
+    		$object = json_decode($qrcode);
+    		if(empty($obj->{'result'})||'0' !=$obj->{'result'}){
+    			Response::sendFailure(1000);
+    		}else{
+    			$tmpdata['qrcodeid'] = $obj->{'sceen_id'};
+    		}
     		$c = new Collection('printorder');
     		$ret = $c->save($tmpdata);
     		if($ret){
-    			Response::sendSuccess($ret);
+    			Response::sendSuccess($tmpdata['qrcodeid']);
     		}else{
     			Response::sendFailure(1000);
     		}
     	}
-        //echo '<script>document.domain="mallschool.me";parent.loadfile("'.$name.'")</script>';
     }
     
     public $get = array(
