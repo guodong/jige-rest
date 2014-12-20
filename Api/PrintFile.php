@@ -94,23 +94,23 @@ class PrintFile extends Api
     							"touser" =>$d["openid"],
     							"template_id"=>"IgGelqxRTCklTkhsQRUEs5cVkUl6T1fdtcOMPfxtN8w",
     							"url"=>"",
-    							"topcolor"=>"#FF0000",
+    							"topcolor"=>"#428bca",
     							"data" => array(
     									"first" => array(
     											"value" =>"打印进度通知",
-    											"color" => "#173177",
+    											"color" => "#428bca",
     									),
     									"OrderSn" => array(
     											"value" =>$d["scene_id"],
-    											"color" => "#173177",
+    											"color" => "#f0ad4e",
     									),
     									"OrderStatus" => array(
     											"value" =>$data["status"],
-    											"color" => "#173177",
+    											"color" => "#f0ad4e",
     									),
     									"remark" => array(
-    											"value" =>"亲爱的同学，您的文档已经打印完毕，请尽快到门店领取",
-    											"color" => "#173177",
+    											"value" =>urlencode("\\n亲爱的同学:\\n您的文档《".$d["filename"]."》已经打印完毕，请尽快到门店领取"),
+    											"color" => "#777",
     									),
     							),
     					);
