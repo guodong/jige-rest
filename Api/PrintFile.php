@@ -109,13 +109,15 @@ class PrintFile extends Api
     											"color" => "#173177"，
     									),
     									"remark" => array(
-    											"value" =>"您的文档已经打印完毕，请尽快到门店领取",
+    											"value" =>"亲爱的同学，您的文档已经打印完毕，请尽快到门店领取",
     											"color" => "#173177"
     									),
     							),
     					);
-    					$url = SAE_ROOT."outjson/post.php";
-    					Util::http_post($url, $postdata);
+    					$url = SAE_ROOT."outjson/SendTemplateMessage.php";
+    					Util::http_post($url, array(
+    						"data" =>$postdata,
+    					));
     				}
     				Response::sendSuccess($ret);
     			}else{
