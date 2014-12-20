@@ -107,11 +107,8 @@ class PrintFile extends Api
     				"filepath" => $data['uploadfilepath'],
     		);
     		$qrcodeurl = SAE_ROOT."outjson/GetQRCodeTicket.php";
-    		Util::logger($qrcodeurl);
     		$qrcode = file_get_contents($qrcodeurl);
-    		Util::logger($qrcode);
-    		$object = json_decode($qrcode);
-    		Util::logger($obj->{'result'});
+    		$obj = json_decode($qrcode);
     		if(empty($obj->{'result'})||"0" !=$obj->{'result'}){
     			Response::sendFailure(1000);
     			return;
