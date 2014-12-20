@@ -92,8 +92,25 @@ class PrintFile extends Api
     				Response::sendFailure(1000);
     			}
     		}
-    	}
-    	else{
+    	}else if("qrcode" == $data["type"]){
+    		if(empty($data["scene_id"])){
+    			Response::sendFailure(1000);
+    			return;
+    		}else{
+    			$scene_id = $data["scene_id"];
+    			unset($data["scene_id"]);
+    			unset($data["type"]);
+    			$ret =  $this->update('where scene_id = ?',
+    					array(
+    							$scene_id
+    					), $data);
+    			if($ret){
+    				Response::sendSuccess($ret);
+    			}else{
+    				Response::sendFailure(1000);
+    			}
+    		}
+    	}else{
     		$tmpdata = array(
     				"pagesize" => $data['pagesize'],
     				"pagecolor" => $data['pagecolor'],
