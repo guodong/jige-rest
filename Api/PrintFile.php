@@ -1,6 +1,7 @@
 <?php
 namespace Api;
 use Pest\Db\Collection;
+use Pest\Db;
 use Pest\Api;
 use Pest\Response;
 use Pest\Request;
@@ -97,14 +98,8 @@ class PrintFile extends Api
     			Response::sendFailure(1000);
     			return;
     		}else{
-    			$scene_id = $data["scene_id"];
-    			unset($data["scene_id"]);
-    			unset($data["type"]);
-    			$c = new Collection('printorder');
-    			$ret =  $c->update('where scene_id = ?',
-    					array(
-    							$scene_id
-    					), $data);
+    			$sql = "UPDATE printorder SET openid = '".$data["openid"]."' WHERE scene_id = '".$data["scene_id"]."'";
+    			$ret = Db::sql($sql);
     			Util::logger($ret);
     			if($ret){
     				Response::sendSuccess($ret);
