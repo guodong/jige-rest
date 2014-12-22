@@ -152,6 +152,7 @@ class PrintFile extends Api
     				"filename" => $data['uploadfilename'],
     				"fileid" => $data['uploadfileid'],
     				"filepath" => $data['uploadfilepath'],
+    				"shopname" => $data['shopname'],
     				"createtime" =>time(),
     		);
     		$qrcodeurl = SAE_ROOT."outjson/GetQRCodeTicket.php";
