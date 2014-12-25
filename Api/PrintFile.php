@@ -170,6 +170,7 @@ class PrintFile extends Api
     		$ret = $c->save($tmpdata);
     		if($ret){
     			Response::sendSuccess(array(
+    				"id" => $ret,
     				"ticket" => $obj->{'ticket'},
     			));
     		}else{
