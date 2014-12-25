@@ -199,7 +199,7 @@ class PrintFile extends Api
     		$s = new Collection('printshop');
     		$ret = $s->findOne("username = ?" , array($data["q"]));
     		if($ret){
-    			$ret = $c->findAll("shopname = ? AND status <> '待支付'", array($ret["displayname"]));
+    			$ret = $c->findAll("shopname = ? AND status <> '待支付' ORDER BY status DESC", array($ret["displayname"]));
     			Response::sendSuccess($ret);
     		}else{
     			Response::sendFailure(1000);
