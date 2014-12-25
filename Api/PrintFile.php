@@ -90,6 +90,14 @@ class PrintFile extends Api
     			if($ret){
     				$d = $c->findOne("id = ?",array($data["id"]));
     				if($d&&!empty($d["openid"])){
+    					if("已打印"==$data["status"]){
+    						$content = urlencode("\\n亲爱的同学:\\n您的文档《".$d["filename"]."》已经打印完毕，请尽快到门店领取");
+    					}else if("待确认"==$data["status"]){
+    						$content = urlencode("\\n亲爱的同学:\\n您的文档《".$d["filename"]."》由于页数不对或者格式待确认，尚未打印，请尽快到门店确认");
+    					}else{
+    						Response::sendSuccess($ret);
+    						return;
+    					}
     					$postdata = array(
     							"touser" =>$d["openid"],
     							"template_id"=>"IgGelqxRTCklTkhsQRUEs5cVkUl6T1fdtcOMPfxtN8w",
@@ -109,7 +117,7 @@ class PrintFile extends Api
     											"color" => "#f0ad4e",
     									),
     									"remark" => array(
-    											"value" =>urlencode("\\n亲爱的同学:\\n您的文档《".$d["filename"]."》已经打印完毕，请尽快到门店领取"),
+    											"value" => $content,
     											"color" => "#aaa",
     									),
     							),
@@ -191,7 +199,7 @@ class PrintFile extends Api
     		$s = new Collection('printshop');
     		$ret = $s->findOne("username = ?" , array($data["q"]));
     		if($ret){
-    			$ret = $c->findAll("shopname = ?", array($ret["displayname"]));
+    			$ret = $c->findAll("shopname = ? AND status <> '待支付'", array($ret["displayname"]));
     			Response::sendSuccess($ret);
     		}else{
     			Response::sendFailure(1000);
