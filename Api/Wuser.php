@@ -57,6 +57,24 @@ class Wuser extends Api
         		Response::sendFailure(1003);
         		return;
         	}
+        }else if("subscribe" == $data['type']){
+        	$data['woid'] = $data['openid'];
+        	unset($data['openid']);
+        	$c = new Collection('user');
+        	$ret = $c->findOne('woid = ?',array($data['woid']));
+        	if($ret){
+	        	$data['id'] = $ret['id'];
+	        	if(empty($ret['config'])){
+	        		$id = $c->save($data);
+	        		$newdata = $c->findOne('id=?', array($id));
+	        		Response::sendSuccess($newdata);
+	        	}else{
+	        		Response::sendSuccess($newdata);
+	        	}
+        	}else{
+        		Response::sendFailure(1003);
+        		return;
+        	}
         }else{
         	Response::sendFailure(1000);
         	return;
