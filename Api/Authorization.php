@@ -36,6 +36,10 @@ class Authorization extends Api
     	$data['code'] = substr(strtoupper(md5(uniqid(mt_rand(), true))),1,6);
     	$data['time'] = time();
     	$ret = $c->save($data);
-    	Response::sendSuccess($ret);
+    	if($ret){
+    		Response::sendSuccess($data['code']);
+    	}else{
+    		Response::sendFailure(1000);
+    	}
     }
 }
