@@ -34,7 +34,7 @@ class Authorization extends Api
     		unset($data['time']);
     	}
     	$data['code'] = substr(strtoupper(md5(uniqid(mt_rand(), true))),1,6);
-    	$data['time'] = time();
+    	$data['time'] = time() + 3600*24;//有效期1天
     	$ret = $c->save($data);
     	if($ret){
     		Response::sendSuccess($data['code']);
