@@ -47,6 +47,9 @@ class Book extends Api
                 $bookinfo = $this->GetBookInfoFromDoubanV2($data['q']);
                 if ($bookinfo) {
                     $result = $this->doubanToDb(json_decode($bookinfo), 2);
+                    if(isset($result["doubanjson"])){
+                    	unset($result["doubanjson"]);
+                    }
                     Response::sendSuccess($result);
                 } else {
                     $bookinfo = $this->GetBookInfoFromDoubanV1($data['q']);
