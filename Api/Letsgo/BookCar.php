@@ -6,7 +6,7 @@ use Pest\Request;
 use Pest\Response;
 use Pest\Db;
 
-class BookCar extends Api
+class Bookcar extends Api
 {
     public $get = array(
     		'id' => '/^\S{24}$/',
