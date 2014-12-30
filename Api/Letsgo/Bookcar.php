@@ -54,8 +54,8 @@ class Bookcar extends Api
     public function all()
     {
         $data = Request::getInstance()->getData();
-        $c = new Collection('letsgo_order_car');
-        $d = $c->findAll('staffid = ', $data["staffid"]);
+        $sql = "SELECT * FROM bookinfo,letsgo_order_car WHERE bookinfo.id = letsgo_order_car.bookid AND letsgo_order_car.staffid = '".$data["staffid"]."'";
+        $d =Db::sql($sql);
         Response::sendSuccess($d);
     }
 }
