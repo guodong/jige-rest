@@ -1,5 +1,5 @@
 <?php
-namespace Api\Document;
+namespace Api\Letsgo;
 use Pest\Api;
 use Pest\Db\Collection;
 use Pest\Request;
