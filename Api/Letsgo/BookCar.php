@@ -4,6 +4,7 @@ use Pest\Api;
 use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
+use Pest\Db;
 
 class BookCar extends Api
 {
@@ -28,15 +29,16 @@ class BookCar extends Api
     {
     	$data = Request::getInstance()->getData();
     	$c = new Collection('letsgo_order_car');
+    	$sql = "SELECT * FROM bookinfo,letsgo_order_car WHERE bookinfo.id = letsgo_order_car.bookid AND letsgo_order_car.staffid = '".$data["staffid"]."'";
     	if("new" == $data["type"]){
     		$d = $c->findOne("bookid = ? AND staffid = ?",array($data['bookid'],$data['staffid']));
     		if($d){
-    			$d = $c->findAll('staffid = ', $data["staffid"]);
+    			$d =Db::sql($sql);
         		Response::sendSuccess($d);
     		}else{
     			$ret = $c->save($data);
     			if($ret){
-    				$d = $c->findAll('staffid = ', $data["staffid"]);
+    				$d =Db::sql($sql);
         			Response::sendSuccess($d);
     			}else{
     				Response::sendFailure();
@@ -44,7 +46,7 @@ class BookCar extends Api
     		}
     	}else if("delete" == $data["type"]){
     		$c->delete("bookid = ? AND staffid = ? ",array($data['bookid'],$data['staffid']));
-    		$d = $c->findAll('staffid = ', $data["staffid"]);
+    		$d =Db::sql($sql);
         	Response::sendSuccess($d);
     	}
     }
