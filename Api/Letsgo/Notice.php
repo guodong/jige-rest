@@ -30,7 +30,7 @@ class Notice extends Api
     {
         $data = Request::getInstance()->getData();
         $c = new Collection('letsgo_notice');
-        $d = $c->findAll('ORDER BY releaseTime DESC', null);
+        $d = $c->findAll('1 = 1 ORDER BY releaseTime DESC', null);
         Response::sendSuccess($d);
     }
 }
