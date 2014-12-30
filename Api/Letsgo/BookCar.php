@@ -8,7 +8,7 @@ use Pest\Response;
 class BookCar extends Api
 {
     public $get = array(
-    		
+    		'id' => '/^\S{24}$/',
     );
     
     public function get ()
@@ -20,7 +20,8 @@ class BookCar extends Api
     }
 
     public $post = array(
-    		
+    		'bookid' => '/^\S{24}$/',
+    		'staffid' => '/^\S{1,}$/',
     );
     
     public function post ()
@@ -30,11 +31,13 @@ class BookCar extends Api
     	if("new" == $data["type"]){
     		$d = $c->findOne("bookid = ? AND staffid = ?",array($data['bookid'],$data['staffid']));
     		if($d){
-    			Response::sendSuccess($d["id"]);
+    			$d = $c->findAll('staffid = ', $data["staffid"]);
+        		Response::sendSuccess($d);
     		}else{
     			$ret = $c->save($data);
     			if($ret){
-    				Response::sendSuccess($ret);
+    				$d = $c->findAll('staffid = ', $data["staffid"]);
+        			Response::sendSuccess($d);
     			}else{
     				Response::sendFailure();
     			}
