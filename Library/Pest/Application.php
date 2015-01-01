@@ -41,7 +41,7 @@ class Application
      */
     private function isPlural ($str)
     {
-        return preg_match('/^[a-z]*s$/', $str);
+        return preg_match('/^[a-zA-Z]*s$/', $str);
     }
 
     private function caseTrans ($str, $div)
