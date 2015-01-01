@@ -209,4 +209,13 @@ class PrintFile extends Api
 	    	Response::sendSuccess($ret);
     	}
     }
+    
+    public function all()
+    {
+    	$data = Request::getInstance()->getData();
+    	$sql= "SELECT count(o.id) as count,s.openid as openid FROM printorder AS o ,printshop AS s WHERE o.shopname = s.displayname AND ".
+      	"o.`status` = '".$data['status']."' GROUP BY s.openid";
+    	$ret = Db::sql($sql);
+    	Response::sendSuccess($ret);
+    }
 }
