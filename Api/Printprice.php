@@ -14,9 +14,9 @@ class Printprice extends Api
     public function get ()
     {
     	$data = Request::getInstance()->getData();
-		$c = new Collection("Printprice");
+		$c = new Collection("printshop");
 		$p = $c->findOne("id = ?",array($data["shopid"]));
-		if(!empty($p["p1"])&&0!=$p["p1"]){
+        if(!empty($p["p1"])&&0!=$p["p1"]){
 			$ret["A4"]["黑白"]["单面"] = $p["p1"];
 		}
 		if(!empty($p["p2"])&&0!=$p["p2"]){
