@@ -5,7 +5,6 @@ use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
 use Pest\Db;
-use Pest\Util;
 
 class Sell extends Api
 {

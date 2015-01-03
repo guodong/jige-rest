@@ -5,7 +5,6 @@ use Pest\Request;
 use Pest\Db\Collection;
 use Pest\Response;
 use Pest\Db;
-use Pest\Util;
 
 class Wuser extends Api
 {
@@ -100,14 +99,14 @@ class Wuser extends Api
 	        		$ret1 = Db::sql($sql);
 	        		$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE status = 0 AND seller_id = '".$user["id"]."'";
 	        		$ret2 = Db::sql($sql);
-	        		$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE (status = '已打印' OR status = '已支付')  AND openid = '".$data['openid']."'";
+	        		$sql = "SELECT COUNT(id) AS count FROM printorder WHERE (status = '已打印' OR status = '已支付')  AND openid = '".$data['openid']."'";
 	        		$ret3 = Db::sql($sql);
         		}else{
         			$sql = "SELECT COUNT(id) AS count FROM sellinfo WHERE seller_id = '".$user["id"]."'";
         			$ret1 = Db::sql($sql);
         			$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE seller_id = '".$user["id"]."'";
         			$ret2 = Db::sql($sql);
-        			$sql = "SELECT COUNT(id) AS count FROM oldproduct WHERE openid = '".$data['openid']."'";
+        			$sql = "SELECT COUNT(id) AS count FROM printorder WHERE openid = '".$data['openid']."'";
         			$ret3 = Db::sql($sql);
         		}
         		Response::sendSuccess(

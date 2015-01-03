@@ -1,24 +1,12 @@
 <?php
 namespace Api;
 use Pest\Db\Collection;
-use Pest\Db;
 use Pest\Api;
 use Pest\Response;
 use Pest\Request;
-use Pest\Util;
 
 class Printprice extends Api
 {
-
-    public $post = array(
-            
-    );
-
-    public function post ()
-    {
-    	$data = Request::getInstance()->getData();
-    }
-    
     public $get = array(
     		"shopid" =>'/^\S{24}$/',
     );
