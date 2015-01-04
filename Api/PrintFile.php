@@ -204,9 +204,9 @@ class PrintFile extends Api
     		}else{
     			Response::sendFailure(1000);
     		}
-    	}else if("openid" == type){
+    	}else if("openid" == $data["type"]){
 	    	$ret = $c->findAll("openid = ?", array($data["openid"]));
-	    	Response::sendSuccess($ret);
+            Response::sendSuccess($ret);
     	}else{
 	    	$ret = $c->findAll("tel = ?", array($data["tel"]));
 	    	Response::sendSuccess($ret);
