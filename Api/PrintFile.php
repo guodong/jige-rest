@@ -216,7 +216,7 @@ class PrintFile extends Api
     public function all()
     {
     	$data = Request::getInstance()->getData();
-    	$sql= "SELECT count(o.id) as count,s.openid as openid FROM printorder AS o ,printshop AS s WHERE o.shopname = s.displayname AND ".
+    	$sql= "SELECT count(o.id) as count,s.openid as openid ,stime as stime ,otime as otime ,notify as notify FROM printorder AS o ,printshop AS s WHERE o.shopname = s.displayname AND ".
       	"o.`status` = '".$data['status']."' GROUP BY s.openid";
     	$ret = Db::sql($sql);
     	Response::sendSuccess($ret);
