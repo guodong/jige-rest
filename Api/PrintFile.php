@@ -199,16 +199,16 @@ class PrintFile extends Api
     		$s = new Collection('printshop');
     		$ret = $s->findOne("username = ?" , array($data["q"]));
     		if($ret){
-    			$ret = $c->findAll("shopname = ? AND status <> '待支付' ORDER BY status DESC", array($ret["displayname"]));
+    			$ret = $c->findAll("shopname = ? AND (status == '已支付'  OR status == '待确认'  ) ORDER BY status DESC", array($ret["displayname"]));
     			Response::sendSuccess($ret);
     		}else{
     			Response::sendFailure(1000);
     		}
     	}else if("openid" == $data["type"]){
-	    	$ret = $c->findAll("openid = ?", array($data["openid"]));
+	    	$ret = $c->findAll("openid = ? AND status <> '已领取' ", array($data["openid"]));
             Response::sendSuccess($ret);
     	}else{
-	    	$ret = $c->findAll("tel = ?", array($data["tel"]));
+	    	$ret = $c->findAll("tel = ?  AND status <> '已领取' ", array($data["tel"]));
 	    	Response::sendSuccess($ret);
     	}
     }
