@@ -5,6 +5,7 @@ use Pest\Db\Collection;
 use Pest\Request;
 use Pest\Response;
 use Pest\Db;
+use Pest\Util;
 
 class Order extends Api
 {
@@ -28,34 +29,27 @@ class Order extends Api
     public function post ()
     {
     	$data = Request::getInstance()->getData();
-    	$c = new Collection('letsgo_order_car');
-    	$sql = "SELECT * FROM bookinfo,letsgo_order_car WHERE bookinfo.id = letsgo_order_car.bookid AND letsgo_order_car.staffid = '".$data["staffid"]."'";
-    	if("new" == $data["type"]){
-    		$d = $c->findOne("bookid = ? AND staffid = ?",array($data['bookid'],$data['staffid']));
-    		if($d){
-    			$d =Db::sql($sql);
-        		Response::sendSuccess($d);
-    		}else{
-    			$ret = $c->save($data);
-    			if($ret){
-    				$d =Db::sql($sql);
-        			Response::sendSuccess($d);
-    			}else{
-    				Response::sendFailure();
-    			}
+    	$c = new Collection('letsgo_order');
+    	$temp = array(
+    			"staffId" => $data["staffid"],
+    			"orderName" => $data["ordername"],
+    			"address" => $data["place"],
+    			"remark" => $data["mark"],
+    			"orderTime" =>time(),
+    			"status" => "0",
+    	);
+    	$orderid = $c->save($temp);
+    	if(!$orderid){
+    		Response::sendFailure();
+    		return;
+    	}else{
+    		$d = new Collection('letsgo_order_book');
+    		$obj = json_decode($data["details"]);
+    		for($i = 0;$i < count($obj);$i++){
+    			list($bookid, $count) = split ('|', $obj[$i]);
+    			Util::logger($bookid."========".$count);
     		}
-    	}else if("delete" == $data["type"]){
-    		$c->delete("bookid = ? AND staffid = ? ",array($data['bookid'],$data['staffid']));
-    		$d =Db::sql($sql);
-        	Response::sendSuccess($d);
+    		Response::sendSuccess($orderid);
     	}
-    }
-    
-    public function all()
-    {
-        $data = Request::getInstance()->getData();
-        $sql = "SELECT * FROM bookinfo,letsgo_order_car WHERE bookinfo.id = letsgo_order_car.bookid AND letsgo_order_car.staffid = '".$data["staffid"]."'";
-        $d =Db::sql($sql);
-        Response::sendSuccess($d);
     }
 }
