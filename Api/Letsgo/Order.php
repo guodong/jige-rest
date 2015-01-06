@@ -16,8 +16,9 @@ class Order extends Api
     public function get ()
     {
         $data = Request::getInstance()->getData();
-        $c = new Collection('letsgo_order');
-	    $d = $c->findOne('id=?', array($data['id']));
+        $sql="SELECT b.`name`,b.author,b.press,b.edition,b.fixedPrice,o.count FROM letsgo_order_book AS o ,bookinfo AS b".
+          " WHERE o.bookid = b.id AND o.orderid = '".$data['id']."'";
+        $d = Db::sql($sql);
 	    Response::sendSuccess($d);
     }
 
