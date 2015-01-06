@@ -46,9 +46,16 @@ class Order extends Api
     		$d = new Collection('letsgo_order_book');
     		$obj = json_decode($data["details"]);
     		for($i = 0;$i < count($obj);$i++){
-    			list($bookid, $count) = split ('|', $obj[$i]);
-    			Util::logger($bookid."========".$count);
-    		}
+                list($bookid, $count) = explode('|', $obj[$i]);
+                $bookid = substr($bookid,6);
+                $orderinfo = array(
+                    'orderid' => $orderid,
+                    'bookid' => $bookid,
+                    'count' => $count,
+                    'status' => '0',
+                );
+                $d->save($orderinfo);
+            }
     		Response::sendSuccess($orderid);
     	}
     }
