@@ -59,4 +59,15 @@ class Order extends Api
     		Response::sendSuccess($orderid);
     	}
     }
+    
+    public function all(){
+    	$data = Request::getInstance()->getData();
+    	$c = new Collection('letsgo_order');
+    	$ret = $c->findAll("staffid = ?", array($data['staffid']));
+    	if($ret){
+    		Response::sendSuccess($ret);
+    	}else{
+    		Response::sendFailure();
+    	}
+    }
 }
