@@ -39,4 +39,9 @@ class Printshop extends Api
 		Response::sendSuccess($p);
     }
 
+    public function all(){
+    	$c = new Collection("printshop");
+    	$p = $c->findAll("1 =1",null);
+    	Response::sendSuccess($p);
+    }
 }
