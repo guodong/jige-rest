@@ -34,9 +34,13 @@ class Printshop extends Api
     public function get ()
     {
     	$data = Request::getInstance()->getData();
-		$c = new Collection("printshop");
-		$p = $c->findOne("openid = ?",array($data["openid"]));
-		Response::sendSuccess($p);
+    	$c = new Collection("printshop");
+    	if("id" == $data['type']){
+    		$p = $c->findOne("id = ?",array($data["shopid"]));
+    	}else{
+			$p = $c->findOne("openid = ?",array($data["openid"]));
+    	}
+    	Response::sendSuccess($p);
     }
 
     public function all(){
