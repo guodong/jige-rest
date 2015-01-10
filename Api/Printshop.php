@@ -28,7 +28,6 @@ class Printshop extends Api
     }
     
     public $get = array(
-    		"openid" =>'/^\S{28}$/',
     );
     
     public function get ()

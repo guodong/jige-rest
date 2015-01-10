@@ -27,7 +27,7 @@ class User extends Api
     {
     	$data = Request::getInstance()->getData();
     	$c = new Collection('letsgo_staff');
-    	$maxid = $c->findOne('1 =? ORDER BY staffid DESC',array("1"));
+    	$maxid = $c->findOne("1 = ? ORDER BY staffid DESC",array("1"));
     	$data["staffid"] = intval($maxid["staffid"])+1;
     	$data["roleType"] ="level0";
     	$date["registerTime"] =  date('Y-m-d H:i:s',time());
