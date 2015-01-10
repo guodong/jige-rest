@@ -27,7 +27,7 @@ class User extends Api
     {
     	$data = Request::getInstance()->getData();
     	$c = new Collection('letsgo_staff');
-    	$ret = $c->findOne("tel = ?",array($data['tel']));
+    	$ret = $c->findOne("telphone = ?",array($data['telphone']));
     	if($ret){
     		Response::sendFailure(1005);
     		return;
