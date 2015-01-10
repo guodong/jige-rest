@@ -20,13 +20,15 @@ class User extends Api
     }
 
     public $post = array(
-    		'staffid' => '/^\S{1,}$/',
+    		//'staffid' => '/^\S{1,}$/',
     );
     
     public function post ()
     {
     	$data = Request::getInstance()->getData();
     	$c = new Collection('letsgo_staff');
+    	$maxid = $c->findOne("1 =1 ORDER BY staffid DESC",null);
+    	$data["staffid"] = intval($maxid["staffid"])+1;
     	$ret = $c->save($data);
     	if($ret){
         	Response::sendSuccess($ret);
