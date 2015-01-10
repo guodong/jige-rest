@@ -32,7 +32,7 @@ class Order extends Api
     	$data = Request::getInstance()->getData();
     	$c = new Collection('letsgo_order');
     	//如果已有订单，则表明重复下单，给用户提示需要修改
-    	$ret = $c -> findOne("staffid = ? AND ordername = ? AND place = ? AND mark = ? ",array(
+    	$ret = $c -> findOne("staffId = ? AND orderName = ? AND address = ? AND remark = ? ",array(
     			$data["staffid"],
     			$data["ordername"],
     			$data["place"],
