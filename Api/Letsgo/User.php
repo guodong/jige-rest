@@ -29,9 +29,15 @@ class User extends Api
     	$c = new Collection('letsgo_staff');
     	$maxid = $c->findOne("1 =1 ORDER BY staffid DESC",null);
     	$data["staffid"] = intval($maxid["staffid"])+1;
+    	$data["roleType"] ="level0";
+    	$date["registerTime"] =  date('Y-m-d H:i:s',time());
+    	$data["level"] ="0.4";
     	$ret = $c->save($data);
     	if($ret){
-        	Response::sendSuccess($ret);
+        	Response::sendSuccess(array(
+	        	"name" =>$data["name"],
+	        	"staffid" =>$data["staffid"],
+        	));
     	}else{
     		Response::sendFailure();
     	}
