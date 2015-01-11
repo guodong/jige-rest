@@ -43,8 +43,20 @@ class Printshop extends Api
     }
 
     public function all(){
-    	$c = new Collection("printshop");
-    	$p = $c->findAll("1 =1",null);
-    	Response::sendSuccess($p);
+    	$s = new Collection("user");
+    	$school = $s->findAll(" role = ? ORDER BY college", array("s_print"));
+    	if($school){
+	    	$c = new Collection("printshop");
+	    	$ret = array();
+	    	for($i = 0;$i < count($school);$i++){
+	    		$shopinfo = $c->findOne("openid = ?",array($school[$i]["openid"]));
+	    		if($shopinfo){
+	    			$ret[$school[$i]["college"]][$shopinfo["displayname"]] =$shopinfo["openid"];
+	    		}
+	    	}
+	    	Response::sendSuccess($ret);
+    	}else{
+    		Response::sendFailure();
+    	}
     }
 }
