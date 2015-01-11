@@ -53,7 +53,7 @@ class Printshop extends Api
                 Util::logger("openid:".$school[$i]["woid"]);
                 $shopinfo = $c->findOne("openid = ?",array($school[$i]["woid"]));
 	    		if($shopinfo){
-	    			$ret[$school[$i]["college"]][$shopinfo["displayname"]] =$shopinfo["openid"];
+	    			$ret[$school[$i]["college"]][$shopinfo["displayname"]] =$shopinfo["id"];
 	    		}
 	    	}
 	    	Response::sendSuccess($ret);
