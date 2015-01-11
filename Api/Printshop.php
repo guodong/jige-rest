@@ -4,6 +4,7 @@ use Pest\Db\Collection;
 use Pest\Api;
 use Pest\Response;
 use Pest\Request;
+use Pest\Util;
 
 class Printshop extends Api
 {
@@ -49,7 +50,8 @@ class Printshop extends Api
 	    	$c = new Collection("printshop");
 	    	$ret = array();
 	    	for($i = 0;$i < count($school);$i++){
-	    		$shopinfo = $c->findOne("openid = ?",array($school[$i]["openid"]));
+                Util::logger("openid:".$school[$i]["woid"]);
+                $shopinfo = $c->findOne("openid = ?",array($school[$i]["woid"]));
 	    		if($shopinfo){
 	    			$ret[$school[$i]["college"]][$shopinfo["displayname"]] =$shopinfo["openid"];
 	    		}
