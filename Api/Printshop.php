@@ -17,6 +17,11 @@ class Printshop extends Api
     {
     	$data = Request::getInstance()->getData();
     	$c = new Collection("printshop");
+    	$ret = $c->findOne("username = ? OR displayname = ?",array($data['username'],$data['displayname']));
+    	if($ret){
+    		Response::sendFailure(1005);
+    		return;
+    	}
     	$ret = $c ->findOne("openid = ?",array($data["openid"]));
     	if($ret){
     		//已经存在，就是更新
